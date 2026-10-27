@@ -348,6 +348,91 @@ body{
   .q-main-text .en{font-size:19px} .q-card{padding:11px;gap:8px}
   .map-card{min-height:74px;padding:9px} .sec-title{margin:9px 0 7px}
 }
+
+/* ===== v2 新增样式 ===== */
+.diff-row{display:flex;gap:6px;margin:8px 0 8px;}
+.diff-pill{flex:1;background:rgba(255,255,255,.06);border:1.5px solid transparent;border-radius:12px;
+  padding:7px 2px;text-align:center;transition:.18s;cursor:pointer;}
+.diff-pill.on{background:linear-gradient(160deg,rgba(255,205,60,.28),rgba(255,150,40,.16));border-color:var(--gold);}
+.diff-pill .ds{font-size:10px;line-height:1.1;letter-spacing:-1px;}
+.diff-pill .dn{font-size:10px;font-weight:800;color:var(--dim);margin-top:2px;}
+.diff-pill.on .dn{color:var(--gold);}
+
+.mode-row{display:flex;gap:8px;margin-bottom:10px;}
+.mode-pill{flex:1;background:rgba(255,255,255,.06);border:1.5px solid transparent;border-radius:12px;
+  padding:9px 4px;text-align:center;font-size:12px;font-weight:800;color:#cfc9e8;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:.18s;}
+.mode-pill.on{background:linear-gradient(160deg,rgba(90,160,255,.3),rgba(60,110,220,.16));
+  border-color:#5AA0FF;color:#fff;}
+
+.duo-wrap{display:flex;flex-direction:column;gap:5px;}
+.p-bar.active-turn{border-color:var(--gold)!important;box-shadow:0 0 0 1.5px rgba(255,205,60,.55);}
+.p2-bar{display:none;}
+
+.q-pic{font-size:76px;text-align:center;line-height:1.05;margin:6px 0 2px;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));animation:popIn .3s ease;}
+.q-sent{font-family:Georgia,serif;font-size:19px;line-height:1.6;text-align:center;color:#fff;
+  padding:8px 4px 2px;}
+.q-sent .blank{display:inline-block;min-width:52px;color:var(--gold);border-bottom:2px dashed var(--gold);
+  text-align:center;font-weight:800;}
+.q-chain{display:flex;align-items:center;justify-content:center;gap:12px;padding:6px 0 2px;}
+.q-chain .cw{font-family:Georgia,serif;font-size:24px;font-weight:800;color:#9fd0ff;}
+.q-chain .arrow{font-size:18px;color:var(--dim);}
+.q-chain .tail{font-family:Georgia,serif;font-size:26px;font-weight:900;color:var(--gold);
+  text-shadow:0 0 14px rgba(255,205,60,.6);}
+.speaker{width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.22);
+  background:linear-gradient(160deg,#3b3a6b,#282650);font-size:28px;color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);transition:.15s;}
+.speaker:active{transform:scale(.93);}
+.opts-b.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.opts-b.grid2 .opt-b{font-size:14px;padding:13px 6px;}
+
+.trophy-shelf{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.tro-item{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:10px 8px;text-align:center;opacity:.45;}
+.tro-item.on{opacity:1;background:linear-gradient(160deg,rgba(255,205,60,.18),rgba(255,150,40,.08));
+  border-color:rgba(255,205,60,.55);box-shadow:0 4px 16px rgba(255,180,40,.18);}
+.tro-item .ti{font-size:28px;line-height:1.2;}
+.tro-item .tn{font-size:12px;font-weight:800;margin-top:3px;color:#fff;}
+.tro-item .tc{font-size:9.5px;color:var(--dim);margin-top:2px;line-height:1.35;}
+
+.duo-sel{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.duo-h{background:rgba(255,255,255,.06);border:1.5px solid transparent;border-radius:11px;
+  padding:7px 2px;text-align:center;cursor:pointer;transition:.15s;}
+.duo-h.on{background:linear-gradient(160deg,rgba(90,160,255,.3),rgba(60,110,220,.14));border-color:#5AA0FF;}
+.duo-h .av{font-size:22px;}
+.duo-h .nm{font-size:9.5px;font-weight:800;color:#cfc9e8;margin-top:1px;}
+.duo-t{font-size:11px;font-weight:800;color:var(--gold);margin:8px 0 5px;}
+
+.gift-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px;background:rgba(255,255,255,.06);border-radius:12px;margin-bottom:8px;font-size:13px;font-weight:800;}
+.gift-in{width:96px;padding:8px 10px;border-radius:9px;border:1.5px solid rgba(255,255,255,.18);
+  background:rgba(0,0,0,.28);color:#fff;font-size:14px;text-align:center;font-weight:800;}
+.gift-tip{font-size:10.5px;color:var(--dim);line-height:1.65;margin-top:6px;}
+
+.hist-list{display:flex;flex-direction:column;gap:6px;}
+.hist-item{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);
+  border-radius:12px;padding:9px 10px;}
+.hist-item .hi-ico{font-size:22px;}
+.hist-item .hi-mid{flex:1;min-width:0;}
+.hist-item .hi-nm{font-size:12px;font-weight:800;color:#fff;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.hist-item .hi-tag{font-size:8.5px;padding:1px 5px;border-radius:6px;background:rgba(255,205,60,.18);color:var(--gold);}
+.hist-item .hi-sub{font-size:9.5px;color:var(--dim);margin-top:2px;}
+.hist-item .hi-right{text-align:right;}
+.hist-item .hi-st{font-size:10px;letter-spacing:-1px;}
+.hist-item .hi-gain{font-size:9px;color:var(--gold);margin-top:2px;white-space:nowrap;}
+.hist-empty{text-align:center;font-size:11.5px;color:var(--dim);padding:20px 10px;line-height:1.7;}
+
+.qr-box{background:#fff;border-radius:16px;padding:10px;display:inline-block;margin:8px 0;}
+.qr-box canvas{display:block;border-radius:8px;}
+.share-url{font-size:10.5px;color:var(--dim);word-break:break-all;margin:6px 0 10px;line-height:1.5;}
+
+.gift-chip{padding:9px 16px;border-radius:11px;border:1.5px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);color:#cfc9e8;font-size:13px;font-weight:800;cursor:pointer;transition:.15s;}
+.gift-chip.on{background:linear-gradient(160deg,rgba(255,205,60,.3),rgba(255,150,40,.16));
+  border-color:var(--gold);color:var(--gold);}
+@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
@@ -363,7 +448,8 @@ body{
         <div class="pc-bar"><i id="homeExpBar" style="width:0%"></i></div>
       </div>
     </div>
-    <div class="coin-box">🪙 <span id="homeCoin">0</span></div>
+    <div class="coin-box">🪙<span id="homeCoin">0</span></div>
+    <div class="trophy-box">🏆<span id="homeTrophy">0</span></div>
   </div>
 
   <div class="logo-area">
@@ -372,16 +458,27 @@ body{
     <div class="game-sub">答对出招 · 答错受伤 · 打怪升级</div>
   </div>
 
-  <div class="sec-title">选择学段<span class="hint" id="stageHint">词汇难度</span></div>
+  <div class="sec-title">学段<span class="hint" id="stageHint">词汇范围</span></div>
   <div class="stage-row" id="stageRow"></div>
+
+  <div class="sec-title">难度<span class="hint">星级越高 · 奖励越丰厚</span></div>
+  <div class="diff-row" id="diffRow"></div>
+
+  <div class="sec-title">模式</div>
+  <div class="mode-row" id="modeRow">
+    <div class="mode-btn on" data-mode="solo"><div class="mi">🧙</div><div><div class="mt">单人闯关</div><div class="md">独自挑战</div></div></div>
+    <div class="mode-btn" data-mode="duo"><div class="mi">👥</div><div><div class="mt">双人合作</div><div class="md">轮流出战</div></div></div>
+  </div>
 
   <div class="sec-title">选择冒险地图</div>
   <div class="map-grid" id="mapGrid"></div>
 
   <div class="home-foot">
-    <button class="btn dark" id="btnHero">🧑‍🚀 角色</button>
-    <button class="btn dark" id="btnBag">🎒 商店</button>
-    <button class="btn blue" id="btnStats">📊 战绩</button>
+    <button class="btn dark" id="btnHero">🧑‍🚀英雄</button>
+    <button class="btn dark" id="btnBag">🎒商店</button>
+    <button class="btn gold" id="btnTrophy">🏆奖杯</button>
+    <button class="btn blue" id="btnShare">📤分享</button>
+    <button class="btn dark" id="btnStats" style="flex:0 0 42px;font-size:14px;">📊</button>
   </div>
 </section>
 
@@ -389,7 +486,8 @@ body{
 <section class="screen" id="screen-battle">
   <div class="battle-hud">
     <button class="icon-btn" id="btnFlee">✕</button>
-    <div class="hud-pill">🎯 第 <b id="waveNum">1</b>/<b id="waveTotal">5</b> 关</div>
+    <div class="hud-pill">🎯 <b id="waveNum">1</b>/<b id="waveTotal">6</b></div>
+    <div class="hud-pill" id="diffHud" style="font-size:8px;letter-spacing:-1px;">⭐⭐</div>
     <div class="hud-pill">🪙 <b id="battleCoin">0</b></div>
     <div class="hud-pill" style="margin-left:auto">⚡ <b id="battleCombo">0</b></div>
   </div>
@@ -405,13 +503,23 @@ body{
 
   <div class="q-card" id="qCard"></div>
 
-  <div class="pc-battle">
-    <div class="av" id="battleAvatar">🧙</div>
-    <div class="bars">
-      <div class="pb-row"><span class="pb-lbl">HP</span><div class="pb hp"><i id="pHp" style="width:100%"></i></div></div>
-      <div class="pb-row"><span class="pb-lbl">MP</span><div class="pb mp"><i id="pMp" style="width:100%"></i></div></div>
+  <div class="duo-wrap">
+    <div class="pc-battle active-turn" id="p1Bar">
+      <div class="av" id="battleAvatar">🧙</div>
+      <div class="bars">
+        <div class="pb-row"><span class="pb-lbl">HP</span><div class="pb hp"><i id="pHp" style="width:100%"></i></div></div>
+        <div class="pb-row"><span class="pb-lbl">MP</span><div class="pb mp"><i id="pMp" style="width:100%"></i></div></div>
+      </div>
+      <div class="combat-n"><span id="pHpTxt">100</span><small id="p1Name">我</small></div>
     </div>
-    <div class="combat-n"><span id="pHpTxt">100</span><small>生命</small></div>
+    <div class="pc-battle" id="p2Bar" style="display:none">
+      <div class="av" id="battleAvatar2">🧚</div>
+      <div class="bars">
+        <div class="pb-row"><span class="pb-lbl">HP</span><div class="pb hp"><i id="p2Hp" style="width:100%"></i></div></div>
+        <div class="pb-row"><span class="pb-lbl">MP</span><div class="pb mp"><i id="p2Mp" style="width:100%"></i></div></div>
+      </div>
+      <div class="combat-n"><span id="p2HpTxt">100</span><small id="p2Name">队友</small></div>
+    </div>
   </div>
 
   <div class="skill-bar">
@@ -434,6 +542,7 @@ body{
       <div class="rw"><div class="v" id="rwRight">0</div><div class="k">答对</div></div>
       <div class="rw"><div class="v" id="rwExp">+0</div><div class="k">经验</div></div>
       <div class="rw"><div class="v" id="rwCoin">+0</div><div class="k">金币</div></div>
+      <div class="rw"><div class="v" id="rwTrophy">0</div><div class="k">奖杯</div></div>
     </div>
     <div class="wrong-box" id="wrongBox" style="display:none">
       <h4>❌ 错题复习</h4>
@@ -479,6 +588,8 @@ body{
   </div>
   <div class="scroll-area">
     <div class="stat-grid" id="statsGrid"></div>
+    <div class="sec-title" style="margin-top:16px;">📜 战斗历史<span class="hint">最近 40 场</span></div>
+    <div id="histList" class="hist-list"></div>
     <div class="sec-title" style="margin-top:16px;">🗺️ 地图进度</div>
     <div id="mapProgress"></div>
     <div style="margin-top:18px;text-align:center;">
@@ -486,6 +597,77 @@ body{
     </div>
   </div>
 </section>
+
+<!-- ============ 奖杯页 ============ -->
+<section class="screen" id="screen-trophy">
+  <div class="battle-hud" style="margin-bottom:10px;">
+    <button class="icon-btn" id="btnTrophyBack">←</button>
+    <div class="hud-pill" style="font-size:12px;">🏆 奖杯陈列室</div>
+    <div class="hud-pill" style="margin-left:auto">🪙 <span id="troCoin">0</span></div>
+  </div>
+  <div class="scroll-area">
+    <div class="sec-title">我的奖杯<span class="hint"><b id="troCount">0</b> / 12 座 · 可用奖杯 <b id="troTrophy">0</b></span></div>
+    <div class="trophy-shelf" id="trophyShelf"></div>
+    <div class="sec-title" style="margin-top:18px;">🎁 赠送队友</div>
+    <div class="row-item">
+      <div class="ri">🪙</div>
+      <div class="rinfo"><div class="rn">赠送金币</div><div class="rd">把金币送给同屏队友，帮 TA 买装备</div></div>
+      <button class="buy" id="giftCoin">赠送</button>
+    </div>
+    <div class="row-item">
+      <div class="ri">🏆</div>
+      <div class="rinfo"><div class="rn">赠送奖杯</div><div class="rd">把奖杯送给队友，帮 TA 集齐陈列室</div></div>
+      <button class="buy" id="giftTrophy">赠送</button>
+    </div>
+    <div class="row-item" style="background:rgba(77,163,255,.1);">
+      <div class="ri">📬</div>
+      <div class="rinfo"><div class="rn">队友收到的礼物</div><div class="rd">金币 <b id="teamCoinGet" style="color:var(--gold)">0</b> · 奖杯 <b id="teamTrophyGet" style="color:var(--gold)">0</b></div></div>
+    </div>
+    <div style="margin-top:14px;font-size:10px;color:var(--dim);line-height:1.7;">
+      💡 双人合作模式下你可以在同一台手机上轮流出战，奖品也能互相赠送。
+    </div>
+  </div>
+</section>
+
+<!-- 分享弹窗 -->
+<div class="overlay" id="ovShare">
+  <div class="sheet" style="text-align:center;">
+    <h3>📤 分享给好友</h3>
+    <div class="sub">扫码打开，或复制链接发到群里</div>
+    <div class="qr-box"><canvas id="qrCanvas" width="200" height="200"></canvas></div>
+    <div class="share-url" id="shareUrl"></div>
+    <div class="acts">
+      <button class="btn dark" id="shareClose">关闭</button>
+      <button class="btn" id="shareCopy">复制链接</button>
+    </div>
+  </div>
+</div>
+
+<!-- 赠礼弹窗 -->
+<div class="overlay" id="ovGift">
+  <div class="sheet">
+    <h3 id="giftTitle">🎁 赠送队友</h3>
+    <div class="sub" id="giftSub"></div>
+    <div style="display:flex;gap:7px;justify-content:center;margin:10px 0;" id="giftAmounts"></div>
+    <div class="acts">
+      <button class="btn dark" id="giftCancel">取消</button>
+      <button class="btn green" id="giftOk">确认赠送</button>
+    </div>
+  </div>
+</div>
+
+<!-- 双人选角 -->
+<div class="overlay" id="ovDuoPick">
+  <div class="sheet">
+    <h3>👥 双人合作</h3>
+    <div class="sub" id="duoMapName"></div>
+    <div class="scroll-area" style="max-height:52vh;" id="duoPickBody"></div>
+    <div class="acts">
+      <button class="btn dark" id="duoCancel">取消</button>
+      <button class="btn" id="duoStart" style="flex:2">开始冒险</button>
+    </div>
+  </div>
+</div>
 
 <!-- 弹窗 -->
 <div class="overlay" id="ovFlee">
@@ -521,6 +703,7 @@ body{
 <div class="confetti" id="confetti"></div>
 </div>
 
+<script src="qrcode.js"></script>
 <script>
 (function(){
 'use strict';
@@ -536,16 +719,16 @@ const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=rnd(i+
 ========================================== */
 const VOCAB = {
 1:[ // 小学
- {w:'apple',c:'苹果'},{w:'banana',c:'香蕉'},{w:'orange',c:'橙子'},{w:'tiger',c:'老虎'},{w:'monkey',c:'猴子'},
- {w:'rabbit',c:'兔子'},{w:'elephant',c:'大象'},{w:'panda',c:'熊猫'},{w:'school',c:'学校'},{w:'teacher',c:'老师'},
- {w:'student',c:'学生'},{w:'pencil',c:'铅笔'},{w:'book',c:'书'},{w:'water',c:'水'},{w:'bread',c:'面包'},
- {w:'milk',c:'牛奶'},{w:'happy',c:'快乐的'},{w:'angry',c:'生气的'},{w:'run',c:'跑'},{w:'jump',c:'跳'},
- {w:'swim',c:'游泳'},{w:'sing',c:'唱歌'},{w:'dance',c:'跳舞'},{w:'red',c:'红色'},{w:'blue',c:'蓝色'},
- {w:'green',c:'绿色'},{w:'yellow',c:'黄色'},{w:'mother',c:'妈妈'},{w:'father',c:'爸爸'},{w:'friend',c:'朋友'},
- {w:'family',c:'家庭'},{w:'cat',c:'猫'},{w:'dog',c:'狗'},{w:'fish',c:'鱼'},{w:'bird',c:'鸟'},
- {w:'tree',c:'树'},{w:'flower',c:'花'},{w:'rain',c:'雨'},{w:'snow',c:'雪'},{w:'sun',c:'太阳'},
- {w:'moon',c:'月亮'},{w:'star',c:'星星'},{w:'door',c:'门'},{w:'window',c:'窗户'},{w:'chair',c:'椅子'},
- {w:'table',c:'桌子'},{w:'morning',c:'早上'},{w:'night',c:'夜晚'},{w:'today',c:'今天'},{w:'tomorrow',c:'明天'}
+ {w:'apple',c:'苹果',e:'🍎'},{w:'banana',c:'香蕉',e:'🍌'},{w:'orange',c:'橙子',e:'🍊'},{w:'tiger',c:'老虎',e:'🐯'},{w:'monkey',c:'猴子',e:'🐵'},
+ {w:'rabbit',c:'兔子',e:'🐰'},{w:'elephant',c:'大象',e:'🐘'},{w:'panda',c:'熊猫',e:'🐼'},{w:'school',c:'学校',e:'🏫'},{w:'teacher',c:'老师',e:'👩‍🏫'},
+ {w:'student',c:'学生',e:'🧑‍🎓'},{w:'pencil',c:'铅笔',e:'✏️'},{w:'book',c:'书',e:'📕'},{w:'water',c:'水',e:'💧'},{w:'bread',c:'面包',e:'🍞'},
+ {w:'milk',c:'牛奶',e:'🥛'},{w:'happy',c:'快乐的',e:'😄'},{w:'angry',c:'生气的',e:'😠'},{w:'run',c:'跑',e:'🏃'},{w:'jump',c:'跳',e:'🤸'},
+ {w:'swim',c:'游泳',e:'🏊'},{w:'sing',c:'唱歌',e:'🎤'},{w:'dance',c:'跳舞',e:'💃'},{w:'red',c:'红色',e:'🔴'},{w:'blue',c:'蓝色',e:'🔵'},
+ {w:'green',c:'绿色',e:'🟢'},{w:'yellow',c:'黄色',e:'🟡'},{w:'mother',c:'妈妈',e:'👩'},{w:'father',c:'爸爸',e:'👨'},{w:'friend',c:'朋友',e:'🤝'},
+ {w:'family',c:'家庭',e:'👨‍👩‍👧'},{w:'cat',c:'猫',e:'🐱'},{w:'dog',c:'狗',e:'🐶'},{w:'fish',c:'鱼',e:'🐟'},{w:'bird',c:'鸟',e:'🐦'},
+ {w:'tree',c:'树',e:'🌳'},{w:'flower',c:'花',e:'🌸'},{w:'rain',c:'雨',e:'🌧️'},{w:'snow',c:'雪',e:'❄️'},{w:'sun',c:'太阳',e:'☀️'},
+ {w:'moon',c:'月亮',e:'🌙'},{w:'star',c:'星星',e:'⭐'},{w:'door',c:'门',e:'🚪'},{w:'window',c:'窗户',e:'🪟'},{w:'chair',c:'椅子',e:'🪑'},
+ {w:'table',c:'桌子',e:'🪑'},{w:'morning',c:'早上',e:'🌅'},{w:'night',c:'夜晚',e:'🌃'},{w:'today',c:'今天',e:'📅'},{w:'tomorrow',c:'明天',e:'➡️'}
 ],
 2:[ // 初中
  {w:'environment',c:'环境'},{w:'pollution',c:'污染'},{w:'protect',c:'保护'},{w:'improve',c:'改善；提高'},
@@ -593,6 +776,49 @@ const VOCAB = {
 ]
 };
 
+
+/* ================== 句子填空题库 ================== */
+const SENTENCES = {
+1:[
+ {s:'I ___ a student.', a:'am', opts:['am','is','are','be'], cn:'我是一名学生。'},
+ {s:'She ___ my sister.', a:'is', opts:['am','is','are','be'], cn:'她是我的姐姐。'},
+ {s:'They ___ playing football.', a:'are', opts:['am','is','are','be'], cn:'他们正在踢足球。'},
+ {s:'I have two ___.', a:'apples', opts:['apple','apples','an apple','applees'], cn:'我有两个苹果。'},
+ {s:'He ___ to school every day.', a:'goes', opts:['go','goes','going','went'], cn:'他每天去上学。'},
+ {s:'This is ___ book.', a:'my', opts:['my','me','I','mine'], cn:'这是我的书。'},
+ {s:'Look! The bird ___ flying.', a:'is', opts:['am','is','are','be'], cn:'看！那只鸟在飞。'},
+ {s:'I like ___ very much.', a:'it', opts:['it','they','them','its'], cn:'我非常喜欢它。'}
+],
+2:[
+ {s:'If it ___ tomorrow, we will stay home.', a:'rains', opts:['rain','rains','will rain','rained'], cn:'如果明天下雨，我们就待在家。'},
+ {s:'She has lived here ___ 2010.', a:'since', opts:['since','for','from','in'], cn:'她自2010年起住这里。'},
+ {s:'He is good ___ playing basketball.', a:'at', opts:['at','in','on','with'], cn:'他擅长打篮球。'},
+ {s:'I ___ my homework already.', a:'have finished', opts:['finish','finished','have finished','will finish'], cn:'我已经完成作业了。'},
+ {s:'This book is ___ than that one.', a:'more interesting', opts:['interesting','more interesting','most interesting','interestinger'], cn:'这本书比那本更有趣。'},
+ {s:'She asked me ___ I could help her.', a:'if', opts:['if','that','what','which'], cn:'她问我能否帮她。'},
+ {s:'The boy ___ is wearing a hat is my brother.', a:'who', opts:['who','which','whom','whose'], cn:'戴帽子的男孩是我弟弟。'},
+ {s:'We should protect nature ___ it is important.', a:'because', opts:['because','so','although','but'], cn:'我们应该保护自然，因为它很重要。'}
+],
+3:[
+ {s:'___ he arrived, the meeting had begun.', a:'When', opts:['When','While','Since','Until'], cn:'当他到达时，会议已经开始了。'},
+ {s:'It is essential that everyone ___ present.', a:'be', opts:['be','is','was','will be'], cn:'每个人都必须到场。'},
+ {s:'Hardly ___ the station when the train left.', a:'had I reached', opts:['I had reached','had I reached','I reached','did I reach'], cn:'我刚到车站，火车就开走了。'},
+ {s:'The more you practice, ___ you will become.', a:'the better', opts:['the better','better','the best','the more good'], cn:'你练得越多就越好。'},
+ {s:'She devoted herself ___ helping the poor.', a:'to', opts:['to','in','for','with'], cn:'她献身于帮助穷人。'},
+ {s:'Not until he failed ___ the importance of hard work.', a:'did he realize', opts:['he realized','did he realize','he did realize','realized he'], cn:'直到失败他才意识到努力的重要。'},
+ {s:'The problem ___ at the meeting now.', a:'is being discussed', opts:['is discussing','is being discussed','discusses','has discussed'], cn:'这个问题现在正在会上讨论。'},
+ {s:'___ from the top, the city looks beautiful.', a:'Seen', opts:['Seeing','Seen','To see','See'], cn:'从顶部看，这座城市很美。'}
+],
+4:[
+ {s:'Please find the ___ invoice attached.', a:'enclosed', opts:['enclosed','enclose','enclosing','enclosure'], cn:'请查收随附的发票。'},
+ {s:'I am writing to ___ about the delay.', a:'complain', opts:['complain','complaint','complaining','complained'], cn:'我写信是为了投诉延误。'},
+ {s:'We would appreciate it if you could ___ payment by Friday.', a:'confirm', opts:['confirm','confirmation','confirmed','confirming'], cn:'若能在周五前确认付款将不胜感激。'},
+ {s:'The meeting has been ___ until next Monday.', a:'postponed', opts:['postpone','postponed','postponing','postponement'], cn:'会议已推迟到下周一。'},
+ {s:'Looking forward to ___ from you soon.', a:'hearing', opts:['hear','hearing','heard','be heard'], cn:'期待尽快收到您的回复。'},
+ {s:'Please ___ your flight 24 hours in advance.', a:'reconfirm', opts:['reconfirm','reconfirms','reconfirmed','reconfirming'], cn:'请提前24小时再次确认航班。'}
+]
+};
+
 /* ================== 主题地图 ================== */
 const MAPS = [
   {id:'space', nm:'太空基地', ico:'🚀', sub:'外星入侵', bg:'linear-gradient(140deg,#2B1B5E,#4B2C8F 50%,#1A1040)',
@@ -631,6 +857,33 @@ const HEROES = [
   {id:'monkey', nm:'齐天大圣', av:'🐒', desc:'七十二变', sk:'答错扣血 -2', expBonus:.1, hp:110, dmg:12, reduceDmg:2}
 ];
 
+
+/* ================== 难度 ================== */
+const DIFFS = [
+  {lv:1, nm:'初级', st:'⭐',     x:1.0, desc:'轻松入门'},
+  {lv:2, nm:'入门', st:'⭐⭐',   x:1.4, desc:'含听力'},
+  {lv:3, nm:'中级', st:'⭐⭐⭐', x:1.9, desc:'含拼写与句法'},
+  {lv:4, nm:'高级', st:'⭐⭐⭐⭐', x:2.5, desc:'混合难题'},
+  {lv:5, nm:'大师', st:'⭐⭐⭐⭐⭐', x:3.2, desc:'极限挑战'}
+];
+const diffObj = lv => DIFFS.find(d=>d.lv===lv) || DIFFS[1];
+
+/* ================== 奖杯 ================== */
+const TROPHIES = [
+  {id:'first',    nm:'初出茅庐', ico:'🥉', cond:'首次通关任意地图'},
+  {id:'combo5',   nm:'连击新星', ico:'⚡', cond:'达成 5 连击'},
+  {id:'combo10',  nm:'连击大师', ico:'🌀', cond:'达成 10 连击'},
+  {id:'perfect',  nm:'完美主义', ico:'💎', cond:'零失误通关'},
+  {id:'star5',    nm:'极限挑战', ico:'🌟', cond:'通关 5 星难度'},
+  {id:'team',     nm:'最佳拍档', ico:'🤝', cond:'双人合作通关'},
+  {id:'rich',     nm:'小富翁',   ico:'💰', cond:'累计持有 1000 金币'},
+  {id:'scholar',  nm:'学霸',     ico:'🎓', cond:'等级达到 Lv.10'},
+  {id:'explorer', nm:'探险家',   ico:'🗺️', cond:'通关 5 张不同地图'},
+  {id:'master',   nm:'单词大师', ico:'👑', cond:'累计答对 500 题'},
+  {id:'collector',nm:'收藏家',   ico:'🎖️', cond:'买齐 6 件商店道具'},
+  {id:'legend',   nm:'传说',     ico:'🏆', cond:'等级达到 Lv.20'}
+];
+
 /* ================== 商店道具 ================== */
 const ITEMS = [
   {id:'potion', nm:'生命药水', ico:'🧪', desc:'战斗中自动生效：开局 +25 生命', price:60},
@@ -642,12 +895,14 @@ const ITEMS = [
 ];
 
 /* ================== 存档 ================== */
-const LS = 'english_island_v1';
+const LS = 'english_island_v2';
 function defaultSave(){
   return {
-    lv:1, exp:0, coin:0, hero:'mage', stage:1,
+    lv:1, exp:0, coin:0, trophy:0, hero:'mage', hero2:'fairy',
+    stage:1, diff:2, mode:'solo',
     items:[], stars:{}, totalRight:0, totalWrong:0, battles:0,
-    heroOf:{} // 地图最高波次记录
+    trophies:[], history:[], bestCombo:0, mapsCleared:[],
+    teamCoin:0, teamTrophy:0
   };
 }
 let save = loadSave();
@@ -655,6 +910,15 @@ function loadSave(){
   try{
     const d = JSON.parse(localStorage.getItem(LS));
     if(d && typeof d.lv === 'number'){ return Object.assign(defaultSave(), d); }
+    // 从 v1 存档迁移
+    const o = JSON.parse(localStorage.getItem('english_island_v1')||'null');
+    if(o && typeof o.lv === 'number'){
+      return Object.assign(defaultSave(), {
+        lv:o.lv, exp:o.exp, coin:o.coin, hero:o.hero||'mage', stage:o.stage||1,
+        items:o.items||[], stars:o.stars||{},
+        totalRight:o.totalRight||0, totalWrong:o.totalWrong||0, battles:o.battles||0
+      });
+    }
   }catch(e){}
   return defaultSave();
 }
@@ -709,8 +973,31 @@ function renderHome(){
       <div class="sub">${m.sub}</div>
     </div>`;
   }).join('');
+  $('#homeTrophy').textContent = save.trophy;
+  $('#stageHint').textContent = {1:'小学词汇 · '+VOCAB[1].length+' 词',2:'初中词汇 · '+VOCAB[2].length+' 词',
+    3:'高中词汇 · '+VOCAB[3].length+' 词',4:'成人进阶 · '+VOCAB[4].length+' 词'}[save.stage];
+
+  // 难度
+  $('#diffRow').innerHTML = DIFFS.map(d=>{
+    return `<div class="diff-pill ${save.diff===d.lv?'on':''}" data-d="${d.lv}">
+      <div class="ds">${d.st}</div><div class="dn">${d.nm}</div></div>`;
+  }).join('');
+  $$('#diffRow .diff-pill').forEach(el=>{
+    el.onclick=()=>{ sClick(); save.diff=+el.dataset.d; persist(); renderHome(); };
+  });
+
+  // 模式
+  $('#modeRow').innerHTML = [
+    ['solo','🕹️','单人闯关'],['duo','🤝','双人合作']
+  ].map(([id,ico,nm])=>`<div class="mode-pill ${save.mode===id?'on':''}" data-m="${id}">
+    <span>${ico}</span>${nm}</div>`).join('');
+  $$('#modeRow .mode-pill').forEach(el=>{
+    el.onclick=()=>{ sClick(); save.mode=el.dataset.m; persist(); renderHome();
+      toast(el.dataset.m==='duo'?'🤝 双人合作：答错由另一位队友顶上':'🕹️ 单人闯关模式'); };
+  });
+
   $$('#mapGrid .map-card').forEach(el=>{
-    el.onclick=()=>{ sClick(); startBattle(el.dataset.id); };
+    el.onclick=()=>{ sClick(); onPickMap(el.dataset.id); };
   });
 }
 
@@ -727,40 +1014,75 @@ const B = {
 
 function startBattle(mapId){
   const m = MAPS.find(x=>x.id===mapId);
-  const h = heroObj();
   B.map = m; B.mapId = mapId;
   B.wave = 1; B.totalWave = 6; // 5 小怪 + 1 boss
-  B.maxHp = h.hp + (save.items.includes('potion')?0:0);
-  B.hp = B.maxHp;
-  if(save.items.includes('potion')) B.hp = Math.min(B.maxHp, B.hp + 25);
-  B.maxMp = save.items.includes('amulet')?7:6;
-  B.mp = B.maxMp;
+  B.diff = save.diff || 2;
+  B.duo = save.mode === 'duo';
+
+  // 拆成多玩家
+  const heroList = B.duo ? [heroObj('hero'), heroObj('hero2')] : [heroObj('hero')];
+  B.p = heroList.map(h=>{
+    const maxHp = h.hp;
+    return {
+      hid: h.id, nm: h.nm, av: h.av,
+      hp: save.items.includes('potion') ? Math.min(maxHp, maxHp + 25) : maxHp,
+      maxHp,
+      mp: save.items.includes('amulet')?7:6,
+      maxMp: save.items.includes('amulet')?7:6,
+      dmg: (h.dmg||10) + (save.items.includes('boots')?4:0),
+      healOnHit: h.healOnHit||0,
+      reduceDmg: h.reduceDmg||0,
+      expBonus: h.expBonus||0,
+      coinBonus: h.coinBonus||0,
+      guard: false, deadly: false
+    };
+  });
+  B.turn = 0;
+
   B.combo=0; B.maxCombo=0; B.right=0; B.wrong=0; B.coin=0; B.exp=0;
-  B.wrongList=[]; B.cd={heal:0,bomb:0,hint:0}; B.bombNext=false; B.emergency=false;
-  $('#battleAvatar').textContent = h.av;
+  B.wrongList=[]; B.cd={heal:3,bomb:3,hint:3}; B.bombNext=false;
   $('#battleCoin').textContent = '0';
   $('#waveTotal').textContent = B.totalWave;
+  $('#diffHud').textContent = diffObj(B.diff).st;
+
+  // 双人条显隐
+  const p2 = $('#p2Bar');
+  if(B.duo){
+    if(p2) p2.style.display = 'flex';
+    const p2h = B.p[1];
+    $('#battleAvatar2').textContent = p2h.av;
+    $('#p2Name').textContent = p2h.nm;
+    const wrap = document.querySelector('.duo-wrap');
+    if(wrap) wrap.classList.add('duo-on');
+  }else{
+    if(p2) p2.style.display = 'none';
+    const wrap = document.querySelector('.duo-wrap');
+    if(wrap) wrap.classList.remove('duo-on');
+  }
+  updatePlayerHud();
   showScreen('screen-battle');
   spawnEnemy();
 }
 
+function curP(){ return B.p[B.turn % B.p.length]; }
+
 function spawnEnemy(){
   const isBoss = B.wave === B.totalWave;
   const idx = B.wave - 1;
-  let ico, nm, hpBase;
+  let ico, nm;
   if(isBoss){
     ico = B.map.boss[0]; nm = B.map.boss[1];
-    hpBase = 5; // 5题
   }else{
     const e = B.map.enemies[Math.min(idx, B.map.enemies.length-1)];
     ico = e[0]; nm = e[1];
-    hpBase = 1;
   }
   B.isBoss = isBoss;
   B.enemyName = nm; B.enemyIco = ico;
-  B.enemyMaxHp = isBoss ? 100 : 100;
+  B.enemyMaxHp = 100;
   B.enemyHp = 100;
-  B.bossLeft = isBoss ? 5 : 1; // 需答对次数
+  // 星级越高 Boss 血量越多
+  const dv = Math.ceil(B.diff/2);
+  B.bossLeft = isBoss ? (4 + Math.min(4, dv)) : 1;
   B.bossTotal = B.bossLeft;
 
   $('#enemyName').textContent = (isBoss?'👑 BOSS · ':'') + nm;
@@ -783,11 +1105,22 @@ function updateEnemyHp(){
 }
 
 function updatePlayerHud(){
-  $('#pHp').style.width = Math.max(0,B.hp/B.maxHp*100) + '%';
-  $('#pMp').style.width = Math.max(0,B.mp/B.maxMp*100) + '%';
-  $('#pHpTxt').textContent = Math.max(0,Math.round(B.hp));
+  const cp = curP();
+  $('#pHp').style.width = Math.max(0,cp.hp/cp.maxHp*100) + '%';
+  $('#pMp').style.width = Math.max(0,cp.mp/cp.maxMp*100) + '%';
+  $('#pHpTxt').textContent = Math.max(0,Math.round(cp.hp));
+  if(B.duo && B.p[1]){
+    const o = B.p[1];
+    if($('#p2Hp')) $('#p2Hp').style.width = Math.max(0,o.hp/o.maxHp*100) + '%';
+    if($('#p2Mp')) $('#p2Mp').style.width = Math.max(0,o.mp/o.maxMp*100) + '%';
+    if($('#p2HpTxt')) $('#p2HpTxt').textContent = Math.max(0,Math.round(o.hp));
+    // 当前回合高亮
+    const w1 = $('#p1Bar'), w2 = $('#p2Bar');
+    if(w1) w1.classList.toggle('active-turn', B.turn % B.p.length === 0);
+    if(w2) w2.classList.toggle('active-turn', B.turn % B.p.length === 1);
+  }
+  if($('#battleAvatar')) $('#battleAvatar').textContent = cp.av;
   $('#battleCombo').textContent = B.combo;
-  const h = heroObj();
   ['heal','bomb','hint'].forEach(k=>{
     const el = $('#cd'+k.charAt(0).toUpperCase()+k.slice(1));
     if(!el) return;
@@ -796,33 +1129,127 @@ function updatePlayerHud(){
   });
 }
 
-/* ================== 出题 ================== */
-function makeQuestion(){
-  const pool = VOCAB[save.stage] || VOCAB[1];
-  const item = pool[rnd(pool.length)];
-  // 题型：60% 选中文, 25% 选英文, 15% 拼写（仅当词长<=9）
-  const r = Math.random();
-  let type = r < .6 ? 'm' : r < .85 ? 'e' : 's';
-  if(type==='s' && item.w.length > 10) type = 'm';
-
-  const others = shuffle(pool.filter(x=>x.w!==item.w)).slice(0,3);
-  if(type==='m'){
-    return {t:'m', word:item.w, ans:item.c, opts:shuffle([item.c, ...others.map(o=>o.c)])};
-  }else if(type==='e'){
-    return {t:'e', word:item.w, ans:item.w, cn:item.c, opts:shuffle([item.w, ...others.map(o=>o.w)])};
+/* ================== 地图选择 ================== */
+let pendingMap = null;
+function onPickMap(id){
+  if(save.mode==='duo'){
+    pendingMap = id;
+    renderDuoPick();
+    $('#ovDuoPick').classList.add('show');
   }else{
-    // 拼写：给中文首字母提示
-    return {t:'s', word:item.w, ans:item.w, cn:item.c};
+    startBattle(id);
   }
 }
+function renderDuoPick(){
+  const m = MAPS.find(x=>x.id===pendingMap);
+  $('#duoMapName').textContent = m ? (m.ico+' '+m.nm) : '';
+  const mk = (sel, cur, slot)=>{
+    return `<div class="duo-sel" id="${sel}">` + HEROES.map(h=>
+      `<div class="duo-h ${h.id===cur?'on':''}" data-h="${h.id}"><div class="av">${h.av}</div><div class="nm">${h.nm}</div></div>`
+    ).join('') + `</div>`;
+  };
+  $('#duoPickBody').innerHTML =
+    `<div class="duo-t">玩家 1（首回合先手）</div>` + mk('duoSel1', save.hero, 1) +
+    `<div class="duo-t" style="margin-top:10px">玩家 2（队友）</div>` + mk('duoSel2', save.hero2, 2);
+  const bind = (sel, key)=>{
+    const box = $('#'+sel);
+    box.querySelectorAll('.duo-h').forEach(el=>{
+      el.onclick = ()=>{ sClick();
+        const h = HEROES.find(x=>x.id===el.dataset.h);
+        box.querySelectorAll('.duo-h').forEach(x=>x.classList.remove('on'));
+        el.classList.add('on');
+        save[key] = el.dataset.h; persist();
+        toast('已选择 '+h.nm);
+      };
+    });
+  };
+  bind('duoSel1','hero'); bind('duoSel2','hero2');
+}
+$('#duoCancel').onclick = ()=> $('#ovDuoPick').classList.remove('show');
+$('#duoStart').onclick = ()=>{
+  $('#ovDuoPick').classList.remove('show');
+  const id = pendingMap; pendingMap = null;
+  if(id) startBattle(id);
+};
+
+/* ================== 出题 ================== */
+// 每题型的抽取权重（按星级）
+const TYPE_POOL = {
+  1:['m','m','m','pic','m','e'],
+  2:['m','m','pic','listen','e','m','s'],
+  3:['m','e','s','listen','sentence','pic'],
+  4:['e','s','listen','sentence','chain','e','pic'],
+  5:['s','sentence','chain','listen','s','e','sentence']
+};
+
+function pickType(){
+  const pool = TYPE_POOL[B.diff] || TYPE_POOL[2];
+  return pool[rnd(pool.length)];
+}
+
+function makeQuestion(){
+  const pool = VOCAB[save.stage] || VOCAB[1];
+  let type = pickType();
+  const item = pool[rnd(pool.length)];
+  // 长单词不考拼写
+  if(type==='s' && item.w.replace(/[^a-zA-Z]/g,'').length > 9) type = 'm';
+
+  const others = shuffle(pool.filter(x=>x.w!==item.w)).slice(0,3);
+  const base = {word:item.w, cn:item.c, emo:item.e||'📘'};
+
+  if(type==='m'){
+    return Object.assign({t:'m', ans:item.c, opts:shuffle([item.c, ...others.map(o=>o.c)])}, base);
+  }
+  if(type==='e'){
+    return Object.assign({t:'e', ans:item.w, opts:shuffle([item.w, ...others.map(o=>o.w)])}, base);
+  }
+  if(type==='s'){
+    return Object.assign({t:'s', ans:item.w}, base);
+  }
+  if(type==='listen'){
+    // 听音选词：朗读单词，选出正确拼写
+    return Object.assign({t:'listen', ans:item.w,
+      opts:shuffle([item.w, ...others.map(o=>o.w)])}, base);
+  }
+  if(type==='pic'){
+    // 看图选词：显示 emoji，选英文单词
+    return Object.assign({t:'pic', ans:item.w,
+      opts:shuffle([item.w, ...others.map(o=>o.w)])}, base);
+  }
+  if(type==='sentence'){
+    // 句子填空 / 语法选择
+    const sents = SENTENCES[save.stage] || SENTENCES[1];
+    const sItem = sents[rnd(sents.length)];
+    return {t:'sentence', ans:sItem.a, opts:shuffle(sItem.opts.slice()),
+      sent:sItem.s, cn:sItem.cn, word:sItem.a, emo:'📝'};
+  }
+  // chain 单词接龙：给出首尾字母，从选项中挑出能接上的词
+  const candidates = pool.filter(x=>/[a-zA-Z]$/.test(x.w) && x.w.length>=3);
+  const start = candidates[rnd(candidates.length)];
+  const lastCh = start.w.slice(-1).toLowerCase();
+  const okList = pool.filter(x=>x.w[0] && x.w[0].toLowerCase()===lastCh && x.w!==start.w);
+  if(okList.length){
+    const good = okList[rnd(okList.length)];
+    const bads = shuffle(pool.filter(x=>
+      x.w!==good.w && (!x.w[0] || x.w[0].toLowerCase()!==lastCh))).slice(0,3);
+    return {t:'chain', ans:good.w, head:start.w, ch:lastCh,
+      opts:shuffle([good.w, ...bads.map(o=>o.w)]), word:good.w, cn:good.c, emo:'🔗'};
+  }
+  // 兜底
+  return Object.assign({t:'m', ans:item.c, opts:shuffle([item.c, ...others.map(o=>o.c)])}, base);
+}
+
+const KIND_MAP = {
+  m:'选出中文意思', e:'选出英文单词', s:'拼写单词',
+  listen:'听音选词', pic:'看图选词', sentence:'句子填空', chain:'单词接龙'
+};
 
 function renderQuestion(){
   B.q = makeQuestion();
   B.locked = false; B.hintUsed = false;
   const q = B.q;
   const card = $('#qCard');
-  const kindMap = {m:'选中文意思', e:'选英文单词', s:'拼写单词'};
-  let html = `<div class="q-kind">${kindMap[q.t]}</div>`;
+  let html = `<div class="q-kind">${KIND_MAP[q.t]||'答题'}</div>`;
 
   if(q.t === 'm'){
     html += `<div class="q-main-text"><span class="en">${q.word}</span><span class="cn">这个词是什么意思？</span></div>
@@ -831,6 +1258,28 @@ function renderQuestion(){
   }else if(q.t === 'e'){
     html += `<div class="q-main-text"><span class="cn" style="font-size:20px;color:#fff">${q.cn}</span><span class="cn">选出对应的英文单词</span></div>
       <div class="opts-b">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else if(q.t === 'pic'){
+    html += `<div class="q-pic">${q.emo}</div>
+      <div class="q-main-text"><span class="cn" style="margin-top:0">看图片，选出正确的英文单词</span></div>
+      <div class="opts-b grid2">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else if(q.t === 'listen'){
+    html += `<div class="q-main-text">
+        <button class="speaker" id="speakerBtn">🔊</button>
+        <span class="cn" style="margin-top:8px">点击喇叭听发音，选出你听到的单词</span></div>
+      <div class="opts-b grid2">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else if(q.t === 'sentence'){
+    const parts = q.sent.split('___');
+    html += `<div class="q-sent">${parts[0]}<span class="blank">?</span>${parts[1]||''}</div>
+      <div class="q-main-text"><span class="cn" style="margin-top:0">${q.cn||'选择正确的词填空'}</span></div>
+      <div class="opts-b grid2">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else if(q.t === 'chain'){
+    html += `<div class="q-chain"><span class="cw">${q.head}</span><span class="arrow">➜</span><span class="tail">${q.ch.toUpperCase()}</span></div>
+      <div class="q-main-text"><span class="cn" style="margin-top:0">接龙！选出以 <b style="color:var(--gold)">${q.ch.toUpperCase()}</b> 开头的单词</span></div>
+      <div class="opts-b grid2">${q.opts.map((o,i)=>
         `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
   }else{
     const hint = q.ans[0] + '_ '.repeat(q.ans.length-1).trim();
@@ -853,11 +1302,27 @@ function renderQuestion(){
     inp.addEventListener('keydown', e=>{ if(e.key==='Enter') checkSpell(); });
     setTimeout(()=>{ try{ inp.focus(); }catch(e){} }, 200);
   }else{
+    if(q.t==='listen'){
+      const sp = $('#speakerBtn');
+      if(sp) sp.onclick = ()=> speakWord(q.ans);
+      setTimeout(()=>speakWord(q.ans), 320);
+    }
     $$('#qCard .opt-b').forEach(b=>{
       b.onclick = ()=> answerChoice(b, b.dataset.v);
     });
   }
   updatePlayerHud();
+}
+
+/* ---- 英语朗读 ---- */
+function speakWord(w){
+  try{
+    if(!('speechSynthesis' in window)) { toast('当前浏览器不支持朗读'); return; }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(w);
+    u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
 }
 
 function checkSpell(){
@@ -884,22 +1349,23 @@ function answerChoice(btn, val){
 
 /* ================== 战斗结算 ================== */
 function settle(ok){
+  if(B.locked) return;
   B.locked = true;
-  const h = heroObj();
-  const atkPower = (h.dmg||10) + (save.items.includes('boots')?4:0);
+  const cp = curP();
+  const dv = diffObj(B.diff);
 
   if(ok){
     B.right++; B.combo++;
     if(B.combo > B.maxCombo) B.maxCombo = B.combo;
-    // 伤害 = 基础 + 连击加成
-    let dmg = atkPower + Math.min(10, B.combo-1)*2;
+    // 伤害 = 基础 + 连击加成 + 星级加成
+    let dmg = Math.round((cp.dmg + Math.min(10, B.combo-1)*2) * dv.x);
     if(B.bombNext){ dmg *= 2; B.bombNext = false; }
-    if(h.healOnHit){ B.hp = Math.min(B.maxHp, B.hp + h.healOnHit); }
+    if(cp.healOnHit) cp.hp = Math.min(cp.maxHp, cp.hp + cp.healOnHit);
 
     // 敌人受伤
     if(B.isBoss){
       B.bossLeft--;
-      B.enemyHp = B.bossLeft / B.bossTotal * 100;
+      B.enemyHp = Math.max(0, B.bossLeft / B.bossTotal * 100);
     }else{
       B.enemyHp = 0;
     }
@@ -909,45 +1375,69 @@ function settle(ok){
     setTimeout(()=>$('#enemySprite').classList.remove('hit'), 420);
     sHit();
 
-    // 每次答对得金币/经验
-    const coinGain = 3 + Math.min(5,B.combo);
+    const coinGain = 3 + Math.min(5,B.combo) + Math.floor(B.diff/2);
     B.coin += coinGain;
-    B.exp += 10;
+    B.exp += 8 + B.diff*3;
     $('#battleCoin').textContent = B.coin;
 
-    B.locked = true;
     setTimeout(()=>{
       if(B.enemyHp <= 0.5 && (!B.isBoss || B.bossLeft<=0)){
         killEnemy();
       }else{
+        nextTurn();
         B.locked=false;
         renderQuestion();
       }
     }, 620);
   }else{
     B.wrong++; B.combo = 0;
-    let dmg = 8;
-    if(h.reduceDmg) dmg -= h.reduceDmg;
+    let dmg = 6 + B.diff*2;
+    if(cp.reduceDmg) dmg -= cp.reduceDmg;
     if(save.items.includes('cloak')) dmg -= 4;
-    dmg = Math.max(3, dmg);
-    B.hp -= dmg;
+    dmg = Math.max(3, Math.round(dmg));
+    cp.hp -= dmg;
     showDmg('-'+dmg, '#FF4D6D');
     sMiss();
-    B.wrongList.push({q:B.q.word, ans:B.q.t==='m'?B.q.ans:B.q.word, cn:B.q.cn||B.q.ans});
+    B.wrongList.push({q:B.q.word||B.q.sent||'', ans:B.q.ans, cn:B.q.cn||''});
     updatePlayerHud();
 
-    // 低血保护：首次进入危险线自动回血一次，避免新手一步卡死
-    if(!B.emergency && B.hp > 0 && B.hp <= B.maxHp*0.3){
-      B.emergency = true;
-      B.hp = Math.min(B.maxHp, B.hp + 35);
-      setTimeout(()=>{ toast('💚 危急时刻！精灵之力为你回复 35 点生命'); }, 500);
+    // 低血保护：每位玩家各有一次
+    if(!cp.deadly && cp.hp > 0 && cp.hp <= cp.maxHp*0.3){
+      cp.deadly = true;
+      cp.hp = Math.min(cp.maxHp, cp.hp + Math.round(cp.maxHp*0.35));
+      setTimeout(()=>{ toast('💚 危急时刻！精灵之力为 '+cp.nm+' 回复生命'); }, 500);
       updatePlayerHud();
     }
 
-    if(B.hp <= 0){ B.hp = 0; updatePlayerHud(); setTimeout(()=>gameOver(), 700); return; }
+    // 判定倒下
+    if(cp.hp <= 0){
+      cp.hp = 0; updatePlayerHud();
+      const alive = B.p.filter(p=>p.hp>0);
+      if(alive.length === 0){
+        setTimeout(()=>gameOver(), 750);
+        return;
+      }
+      // 有队友存活 → 切换给队友继续
+      setTimeout(()=>{
+        toast('💫 '+cp.nm+' 倒下了，'+alive[0].nm+' 顶上！');
+        B.turn = B.p.indexOf(alive[0]);
+        updatePlayerHud();
+        B.locked=false; renderQuestion();
+      }, 1200);
+      return;
+    }
 
-    B.locked = true;
-    setTimeout(()=>{ B.locked=false; renderQuestion(); }, 1150);
+    setTimeout(()=>{ nextTurn(); B.locked=false; renderQuestion(); }, 1150);
+  }
+  updatePlayerHud();
+}
+
+function nextTurn(){
+  if(B.p.length <= 1) return;
+  const n = B.p.length;
+  for(let i=1;i<=n;i++){
+    const idx = (B.turn + i) % n;
+    if(B.p[idx].hp > 0){ B.turn = idx; break; }
   }
   updatePlayerHud();
 }
@@ -966,8 +1456,8 @@ function killEnemy(){
   const sp = $('#enemySprite');
   sp.classList.add('dead');
   sDie();
-  B.coin += B.isBoss ? 40 : 12;
-  B.exp += B.isBoss ? 60 : 18;
+  B.coin += Math.round((B.isBoss ? 40 : 12) * diffObj(B.diff).x);
+  B.exp += Math.round((B.isBoss ? 60 : 18) * diffObj(B.diff).x);
   $('#battleCoin').textContent = B.coin;
 
   setTimeout(()=>{
@@ -979,28 +1469,31 @@ function killEnemy(){
 
 /* ================== 技能 ================== */
 $('#skHeal').onclick = ()=>{
-  if(B.locked || B.cd.heal>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
-  B.mp--; B.hp = Math.min(B.maxHp, B.hp + 30); B.cd.heal = 3;
+  const cp = curP();
+  if(B.locked || B.cd.heal>0 || cp.mp<1) { if(cp.mp<1) toast('MP 不足'); return; }
+  cp.mp--; cp.hp = Math.min(cp.maxHp, cp.hp + 30); B.cd.heal = 3;
   showDmg('+30', '#4DE38A'); updatePlayerHud(); sHit();
 };
 $('#skBomb').onclick = ()=>{
-  if(B.locked || B.cd.bomb>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
-  B.mp--; B.bombNext = true; B.cd.bomb = 3;
+  const cp = curP();
+  if(B.locked || B.cd.bomb>0 || cp.mp<1) { if(cp.mp<1) toast('MP 不足'); return; }
+  cp.mp--; B.bombNext = true; B.cd.bomb = 3;
   toast('💥 下一击伤害翻倍！'); updatePlayerHud();
 };
 $('#skHint').onclick = ()=>{
-  if(B.locked || B.cd.hint>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
+  const cp = curP();
+  if(B.locked || B.cd.hint>0 || cp.mp<1) { if(cp.mp<1) toast('MP 不足'); return; }
   if(B.q.t === 's'){ toast('💡 提示：' + B.q.ans[0].toUpperCase() + '...'); }
   else{
-    // 排除两个错误选项
     const wrongBtns = $$('#qCard .opt-b').filter(b=>b.dataset.v !== B.q.ans);
     shuffle(wrongBtns).slice(0,2).forEach(b=>{ b.classList.add('dim'); b.style.pointerEvents='none'; });
     toast('💡 排除了两个错误选项');
   }
-  B.mp--; B.cd.hint = 3; updatePlayerHud();
+  cp.mp--; B.cd.hint = 3; updatePlayerHud();
 };
 
 /* ================== 结算 ================== */
+function winIsOk(stars){ return stars >= 1; }
 function winBattle(){
   const total = B.right + B.wrong;
   const rate = total? B.right/total : 0;
@@ -1016,6 +1509,22 @@ function winBattle(){
   save.totalRight += B.right;
   save.totalWrong += B.wrong;
   save.battles = (save.battles||0)+1;
+  if(B.maxCombo > (save.bestCombo||0)) save.bestCombo = B.maxCombo;
+  if(!save.mapsCleared.includes(B.mapId)) save.mapsCleared.push(B.mapId);
+
+  // 奖杯奖励
+  let trophyGain = stars>=3 ? Math.max(1, Math.ceil(B.diff/2)) : (stars>=2 ? 1 : 0);
+  if(B.duo) trophyGain += 1; // 合作额外奖励
+  save.trophy = (save.trophy||0) + trophyGain;
+
+  // 战斗历史
+  save.history = save.history || [];
+  save.history.unshift({
+    d: Date.now(), map:B.map.nm, ico:B.map.ico, stage:save.stage, diff:B.diff,
+    duo:B.duo, stars, right:B.right, wrong:B.wrong, exp:expGain, coin:coinGain,
+    trophy:trophyGain, rate:Math.round(rate*100)
+  });
+  if(save.history.length > 40) save.history.length = 40;
   const curWaveKey = 'w_'+key;
   if((save[curWaveKey]||0) < B.totalWave) save[curWaveKey] = B.totalWave;
 
@@ -1023,9 +1532,14 @@ function winBattle(){
   save.exp += expGain;
   let leveled = 0;
   while(save.exp >= expNeed(save.lv)){ save.exp -= expNeed(save.lv); save.lv++; leveled++; }
+  window.__lastTrophy = trophyGain;
+  save.lastPerfect = (stars===3 && B.wrong===0);
+  if(B.diff >= 5 && winIsOk(stars)) save.everStar5 = true;
+  if(B.duo) save.everDuo = true;
   persist();
 
   showResult(true, stars, expGain, coinGain, rate);
+  checkTrophies();
   if(leveled){
     try{ sLevel(); }catch(e){}
     setTimeout(()=>{
@@ -1054,6 +1568,7 @@ function showResult(win, stars, expGain, coinGain, rate){
   $('#rwRight').textContent = B.right;
   $('#rwExp').textContent = '+' + expGain;
   $('#rwCoin').textContent = '+' + coinGain;
+  if($('#rwTrophy')) $('#rwTrophy').textContent = '+' + (win ? (window.__lastTrophy||0) : 0);
 
   const starEls = $('#resStars').children;
   for(let i=0;i<3;i++){
@@ -1073,6 +1588,141 @@ function showResult(win, stars, expGain, coinGain, rate){
   }
   showScreen('screen-result');
   if(win && stars>=2) confettiRain();
+}
+
+/* ================== 奖杯系统 ================== */
+function checkTrophies(){
+  const got = [];
+  const own = id => save.trophies.includes(id);
+  const give = id => { if(!own(id)){ save.trophies.push(id); got.push(id); } };
+
+  if(save.battles >= 1) give('first');
+  if((save.bestCombo||0) >= 5) give('combo5');
+  if((save.bestCombo||0) >= 10) give('combo10');
+  if(save.lastPerfect) give('perfect');
+  if(save.everStar5) give('star5');
+  if(save.everDuo) give('team');
+  if(save.coin >= 1000) give('rich');
+  if(save.lv >= 10) give('scholar');
+  if((save.mapsCleared||[]).length >= 5) give('explorer');
+  if(save.totalRight >= 500) give('master');
+  if((save.items||[]).length >= ITEMS.length) give('collector');
+  if(save.lv >= 20) give('legend');
+
+  if(got.length){
+    save.trophy = (save.trophy||0) + got.length * 2;
+    persist();
+    const names = got.map(id=>{ const t=TROPHIES.find(x=>x.id===id); return t?t.ico+' '+t.nm:id; }).join('、');
+    setTimeout(()=>{
+      toast('🏆 解锁奖杯：' + names);
+      try{ sLevel(); }catch(e){}
+    }, 1400);
+  }
+  return got;
+}
+
+function renderTrophyPage(){
+  $('#troCount').textContent = save.trophies.length + ' / ' + TROPHIES.length;
+  $('#troCoin').textContent = save.coin;
+  $('#troTrophy').textContent = save.trophy||0;
+  $('#teamCoinGet').textContent = save.teamCoin||0;
+  $('#teamTrophyGet').textContent = save.teamTrophy||0;
+
+  $('#trophyShelf').innerHTML = TROPHIES.map(t=>{
+    const on = save.trophies.includes(t.id);
+    return `<div class="tro-item ${on?'on':''}">
+      <div class="ti">${on?t.ico:'🔒'}</div>
+      <div class="tn">${t.nm}</div>
+      <div class="tc">${t.cond}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ================== 赠礼 ================== */
+let giftKind = 'coin';
+let giftVal = 0;
+function openGift(kind){
+  giftKind = kind || 'coin';
+  giftVal = 0;
+  const isCoin = giftKind === 'coin';
+  $('#giftTitle').textContent = isCoin ? '🪙 赠送金币' : '🏆 赠送奖杯';
+  $('#giftSub').textContent = isCoin
+    ? `你有 ${save.coin} 金币，送给并肩作战的队友`
+    : `你有 ${save.trophy||0} 座奖杯，送给并肩作战的队友`;
+  const max = isCoin ? save.coin : (save.trophy||0);
+  const presets = isCoin ? [10,30,50,100] : [1,2,3,5];
+  const list = presets.filter(v=>v<=max);
+  if(max>0 && (list.length===0 || list[list.length-1]!==max)) list.push(max);
+  $('#giftAmounts').innerHTML = (list.length
+    ? list.map(v=>`<button class="gift-chip" data-v="${v}">${v}</button>`).join('')
+    : `<div style="font-size:11px;color:var(--dim)">暂时没有可赠送的${isCoin?'金币':'奖杯'}，先去闯关赚一些吧</div>`);
+  $$('#giftAmounts .gift-chip').forEach((b,i)=>{
+    if(i===0) b.classList.add('on');
+    b.onclick = ()=>{
+      giftVal = +b.dataset.v;
+      $$('#giftAmounts .gift-chip').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); sClick();
+    };
+  });
+  if(list.length) giftVal = list[0];
+  $('#ovGift').classList.add('show');
+}
+$('#giftCancel').onclick = ()=> $('#ovGift').classList.remove('show');
+$('#giftOk').onclick = ()=>{
+  const isCoin = giftKind === 'coin';
+  const max = isCoin ? save.coin : (save.trophy||0);
+  if(giftVal <= 0 || max <= 0){ toast('暂无可赠送的数量'); return; }
+  const v = Math.min(giftVal, max);
+  if(isCoin){
+    save.coin -= v; save.teamCoin = (save.teamCoin||0) + v;
+  }else{
+    save.trophy = (save.trophy||0) - v; save.teamTrophy = (save.teamTrophy||0) + v;
+  }
+  persist();
+  $('#ovGift').classList.remove('show');
+  try{ sLevel(); }catch(e){}
+  toast('🎁 已送出 '+v+(isCoin?' 金币':' 座奖杯')+' 给队友');
+  renderTrophyPage();
+};
+
+/* ================== 二维码分享 ================== */
+const SHARE_URL = 'https://qin800121.github.io/english-island/';
+function drawQR(){
+  const cv = $('#qrCanvas');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const size = cv.width;
+  ctx.clearRect(0,0,size,size);
+  if(typeof qrcode !== 'function'){
+    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+    ctx.fillStyle = '#111'; ctx.font = '12px sans-serif';
+    ctx.fillText('二维码加载失败', 10, size/2);
+    return;
+  }
+  try{
+    const qr = qrcode(0, 'M');
+    qr.addData(SHARE_URL);
+    qr.make();
+    const n = qr.getModuleCount();
+    const pad = 4;
+    const cell = (size - pad*2) / n;
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,size,size);
+    ctx.fillStyle = '#141026';
+    for(let r=0;r<n;r++){
+      for(let c=0;c<n;c++){
+        if(qr.isDark(r,c)){
+          ctx.fillRect(pad + c*cell, pad + r*cell, Math.ceil(cell), Math.ceil(cell));
+        }
+      }
+    }
+  }catch(e){
+    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+  }
+}
+function openShare(){
+  $('#ovShare').classList.add('show');
+  $('#shareUrl').textContent = SHARE_URL;
+  setTimeout(drawQR, 60);
 }
 
 /* ================== 页面切换 ================== */
@@ -1150,6 +1800,7 @@ function renderStats(){
     <div class="stat-c"><div class="v">${starCount}</div><div class="k">获得星星</div></div>
     <div class="stat-c"><div class="v">${save.battles||0}</div><div class="k">战斗次数</div></div>
     <div class="stat-c"><div class="v">${save.coin}</div><div class="k">金币余额</div></div>`;
+  renderHistory();
   const stageNm = {1:'小学',2:'初中',3:'高中',4:'成人'};
   $('#mapProgress').innerHTML = Object.keys(stageNm).map(s=>{
     const rows = MAPS.map(m=>{
@@ -1161,6 +1812,32 @@ function renderStats(){
   }).join('');
 }
 
+/* ================== 历史记录 ================== */
+function renderHistory(){
+  const box = $('#histList');
+  if(!box) return;
+  const list = save.history || [];
+  if(!list.length){
+    box.innerHTML = `<div class="hist-empty">还没有战斗记录，去地图挑一关开始冒险吧 🚀</div>`;
+    return;
+  }
+  const stageNm = {1:'小学',2:'初中',3:'高中',4:'成人'};
+  box.innerHTML = list.map(h=>{
+    const d = new Date(h.d);
+    const ds = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const st = '⭐'.repeat(h.stars||0) + '☆'.repeat(3-(h.stars||0));
+    return `<div class="hist-item">
+      <div class="hi-ico">${h.ico||'🗺️'}</div>
+      <div class="hi-mid">
+        <div class="hi-nm">${h.map} ${h.duo?'<span class="hi-tag">🤝双人</span>':''}<span class="hi-tag">${diffObj(h.diff).st}</span></div>
+        <div class="hi-sub">${stageNm[h.stage]||''} · 正确率 ${h.rate}% · 对${h.right}/错${h.wrong} · ${ds}</div>
+      </div>
+      <div class="hi-right"><div class="hi-st">${st}</div>
+        <div class="hi-gain">🪙${h.coin} 🏆${h.trophy||0}</div></div>
+    </div>`;
+  }).join('');
+}
+
 /* ================== 事件绑定 ================== */
 $('#btnHero').onclick = ()=>{ sClick(); renderHeroPage(); showScreen('screen-hero'); };
 $('#btnHeroBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
@@ -1168,6 +1845,28 @@ $('#btnBag').onclick = ()=>{ sClick(); renderShop(); showScreen('screen-shop'); 
 $('#btnShopBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
 $('#btnStats').onclick = ()=>{ sClick(); renderStats(); showScreen('screen-stats'); };
 $('#btnStatsBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnTrophy').onclick = ()=>{ sClick(); renderTrophyPage(); showScreen('screen-trophy'); };
+$('#btnTrophyBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnShare').onclick = ()=>{ sClick(); openShare(); };
+$('#shareClose').onclick = ()=> $('#ovShare').classList.remove('show');
+$('#shareCopy').onclick = ()=>{
+  const txt = SHARE_URL;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(()=>toast('✅ 链接已复制，粘贴到微信即可')).catch(()=>fallbackCopy(txt));
+    }else fallbackCopy(txt);
+  }catch(e){ fallbackCopy(txt); }
+};
+function fallbackCopy(txt){
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position='fixed'; ta.style.left='-999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('✅ 链接已复制'); }
+  catch(e){ toast('请长按链接手动复制'); }
+  ta.remove();
+}
+$('#giftCoin').onclick = ()=>{ sClick(); openGift('coin'); };
+$('#giftTrophy').onclick = ()=>{ sClick(); openGift('trophy'); };
 $('#btnResetAll').onclick = ()=>{
   if(confirm('确定重置全部进度吗？等级、金币、道具都会清空')){
     save = defaultSave(); persist(); renderHome(); renderStats(); toast('已重置');
@@ -1191,9 +1890,14 @@ renderHome();
 if(DEBUG){
   window.__t = {
     get q(){ return B.q; },
-    get state(){ return {hp:B.hp, maxHp:B.maxHp, wave:B.wave, right:B.right, wrong:B.wrong,
-      combo:B.combo, coin:B.coin, enemyHp:B.enemyHp, isBoss:B.isBoss, bossLeft:B.bossLeft, locked:B.locked}; },
-    settle, B
+    get state(){
+      const cp = curP ? curP() : null;
+      return {hp:cp?cp.hp:0, maxHp:cp?cp.maxHp:0, wave:B.wave, right:B.right, wrong:B.wrong,
+        combo:B.combo, coin:B.coin, enemyHp:B.enemyHp, isBoss:B.isBoss, bossLeft:B.bossLeft,
+        locked:B.locked, turn:B.turn, players:(B.p||[]).map(p=>({nm:p.nm,hp:p.hp,maxHp:p.maxHp,mp:p.mp})),
+        diff:B.diff, duo:B.duo, qt:B.q&&B.q.t};
+    },
+    settle, B, save:()=>save, startBattle, renderQuestion, checkTrophies
   };
 }
 })();
