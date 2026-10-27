@@ -961,8 +961,8 @@ function tone(f1,f2,dur,type,vol){
 /* 答对：清脆上扬的双音铃声 */
 const sHit=()=>{ tone(784,null,.1,'triangle',.12); setTimeout(()=>tone(1175,null,.16,'triangle',.12), 90); };
 /* 答错：响亮低沉的警示音，与答对比反差强烈 */
-const sMiss=()=>{ tone(233,110,.42,'sawtooth',.16); tone(117,55,.45,'square',.13); };
-const sDie=()=>{ tone(700,90,.5,'sawtooth',.13); tone(120,42,.55,'sine',.18); };
+const sMiss=()=>{ tone(392,262,.22,'sine',.1); setTimeout(()=>tone(311,233,.3,'sine',.1), 160); };
+const sDie=()=>{ tone(660,110,.45,'triangle',.12); tone(150,55,.5,'sine',.14); };
 const sClick=()=>tone(520,null,.05,'sine',.04);
 const sLevel=()=>{tone(660,1320,.35,'triangle',.09);};
 
@@ -989,7 +989,7 @@ function startBGM(mapId){
   bgmTimer = setInterval(()=>{
     const c=ac(); if(!c) return;
     if(bgmStep%4===0)
-      tone(th.bass[(bgmStep/4)%th.bass.length], null, iv*3.6, 'triangle', .045);
+      tone(th.bass[(bgmStep/4)%th.bass.length], null, iv*3.6, 'sine', .03);
     if(bgmStep%2===0)
       tone(th.mel[(bgmStep/2)%th.mel.length], null, iv*1.8, th.wave, th.vol);
     bgmStep++;
