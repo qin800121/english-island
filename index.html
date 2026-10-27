@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1c1a3a">
+<title>英语冒险岛 · 闯关打怪学英语</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231c1a3a'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23ffd93d'>A</text></svg>">
+<style>
+:root{
+  --ink:#EDEBFF; --dim:#9C97C8; --line:rgba(255,255,255,.12);
+  --bg:#141230; --bg2:#1F1B45;
+  --gold:#FFD93D; --gold2:#F0A500;
+  --hp:#FF4D6D; --mp:#4DA3FF; --exp:#4DE38A;
+  --card:rgba(255,255,255,.06);
+  --card-b:rgba(255,255,255,.14);
+  --sh:0 8px 28px rgba(0,0,0,.38);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  background:#0D0B22;color:var(--ink);overflow:hidden;overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-text-size-adjust:100%;
+}
+#app{position:relative;height:100%;width:100%;max-width:560px;margin:0 auto;overflow:hidden;background:var(--bg);}
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 14px calc(var(--safe-b) + 10px);
+  opacity:0;visibility:hidden;transform:translateY(16px);
+  transition:opacity .28s,transform .28s,visibility .28s;overflow:hidden;
+}
+.screen.active{opacity:1;visibility:visible;transform:none;}
+.screen::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(120,90,255,.28), transparent 46%),
+    radial-gradient(circle at 88% 92%, rgba(255,90,160,.2), transparent 48%),
+    linear-gradient(175deg,#171433,#0F0D26 60%,#120F2C);
+}
+.screen>*{position:relative;z-index:1;}
+
+/* 通用 */
+.btn{
+  border:none;font-family:inherit;font-weight:800;color:#241C00;border-radius:15px;cursor:pointer;
+  font-size:16px;padding:14px;transition:transform .08s,box-shadow .08s,filter .15s;
+  background:linear-gradient(180deg,#FFE066,#FFC300);
+  box-shadow:0 5px 0 #C79400,0 8px 20px rgba(255,195,0,.28);
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #C79400;}
+.btn:disabled{filter:grayscale(.8) brightness(.75);cursor:not-allowed;}
+.btn.dark{background:linear-gradient(180deg,#3A3563,#2A2649);color:var(--ink);box-shadow:0 5px 0 #1A1734,0 8px 18px rgba(0,0,0,.35);}
+.btn.dark:active{box-shadow:0 2px 0 #1A1734;}
+.btn.blue{background:linear-gradient(180deg,#7CC4FF,#4DA3FF);color:#02203D;box-shadow:0 5px 0 #2B7ACC,0 8px 20px rgba(77,163,255,.3);}
+.btn.blue:active{box-shadow:0 2px 0 #2B7ACC;}
+.btn.pink{background:linear-gradient(180deg,#FF9CBB,#FF4D88);color:#3D0018;box-shadow:0 5px 0 #C42A5E,0 8px 20px rgba(255,77,136,.3);}
+.btn.pink:active{box-shadow:0 2px 0 #C42A5E;}
+.btn.wide{width:100%;}
+.icon-btn{
+  width:40px;height:40px;flex:0 0 40px;border-radius:13px;border:1px solid var(--card-b);
+  background:var(--card);color:var(--ink);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);
+}
+.icon-btn:active{transform:scale(.94);}
+
+/* ============ 首页 ============ */
+.hero-top{display:flex;align-items:center;gap:8px;}
+.player-card{
+  flex:1;display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--card-b);
+  border-radius:15px;padding:7px 10px;backdrop-filter:blur(10px);
+}
+.pc-avatar{
+  width:36px;height:36px;flex:0 0 36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;background:linear-gradient(140deg,#6C5CE7,#4837C7);box-shadow:0 3px 10px rgba(108,92,231,.4);
+}
+.pc-info{flex:1;min-width:0;}
+.pc-name{font-size:13px;font-weight:800;display:flex;align-items:center;gap:5px;}
+.lv-badge{font-size:9px;background:var(--gold);color:#3A2A00;padding:1px 6px;border-radius:6px;font-weight:900;}
+.pc-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.13);margin-top:4px;overflow:hidden;}
+.pc-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#4DE38A,#2FD073);transition:width .4s;}
+.coin-box{
+  display:flex;align-items:center;gap:4px;background:rgba(255,217,61,.14);border:1px solid rgba(255,217,61,.3);
+  border-radius:12px;padding:8px 11px;font-size:13px;font-weight:900;color:var(--gold);
+}
+.logo-area{text-align:center;padding:14px 0 6px;}
+.logo-island{
+  display:inline-flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:24px;
+  background:linear-gradient(145deg,#7C6CF5,#4B39C9 55%,#2D1F8F);
+  font-size:36px;box-shadow:0 14px 34px rgba(108,92,231,.45),inset 0 2px 0 rgba(255,255,255,.25);
+  animation:bob 3s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+.game-title{
+  font-size:28px;font-weight:900;letter-spacing:2px;margin-top:10px;
+  background:linear-gradient(92deg,#FFE066,#FF8FB1,#7CC4FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.game-sub{font-size:11px;color:var(--dim);margin-top:5px;letter-spacing:1.5px;}
+
+.sec-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;margin:14px 0 9px;}
+.sec-title::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--gold);}
+.sec-title .hint{margin-left:auto;font-size:11px;color:var(--dim);font-weight:600;}
+
+/* 学段选择 */
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.stage-pill{
+  background:var(--card);border:1px solid var(--card-b);border-radius:13px;padding:10px 3px;text-align:center;
+  cursor:pointer;transition:.16s;
+}
+.stage-pill .g{font-size:17px;}
+.stage-pill .t{font-size:11px;font-weight:800;margin-top:3px;}
+.stage-pill.on{background:linear-gradient(180deg,#7C6CF5,#5342D6);border-color:#8E7FFF;transform:translateY(-2px);box-shadow:0 6px 16px rgba(108,92,231,.4);}
+
+/* 地图网格 */
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.map-card{
+  position:relative;border-radius:17px;padding:12px;overflow:hidden;cursor:pointer;
+  border:1px solid var(--card-b);transition:.16s;min-height:88px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.map-card:active{transform:scale(.97);}
+.map-card .bg{position:absolute;inset:0;opacity:.9;}
+.map-card .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgba(0,0,0,.62));}
+.map-card .ico{position:absolute;right:8px;top:7px;font-size:26px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+.map-card .nm{font-size:13px;font-weight:900;position:relative;z-index:2;text-shadow:0 1px 4px rgba(0,0,0,.7);}
+.map-card .sub{font-size:10px;color:rgba(255,255,255,.8);position:relative;z-index:2;margin-top:2px;font-weight:600;}
+.map-card .lock{
+  position:absolute;inset:0;background:rgba(10,8,26,.72);backdrop-filter:blur(2px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3;gap:3px;
+  font-size:11px;color:#B9B3E0;font-weight:700;
+}
+.map-card .lock .lk{font-size:19px;}
+.map-card .stars-line{position:absolute;left:12px;top:8px;font-size:10px;z-index:2;letter-spacing:1px;}
+
+.home-foot{margin-top:auto;display:flex;gap:8px;padding-top:10px;}
+.home-foot .btn{flex:1;font-size:14px;padding:13px 6px;}
+
+/* ============ 弹窗通用 ============ */
+.overlay{
+  position:absolute;inset:0;background:rgba(6,4,20,.78);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:20px;z-index:150;
+  opacity:0;visibility:hidden;transition:.22s;
+}
+.overlay.show{opacity:1;visibility:visible;}
+.sheet{
+  background:linear-gradient(175deg,#241F4D,#191537);border:1px solid var(--card-b);
+  border-radius:24px;padding:20px 18px;width:100%;max-width:340px;max-height:86vh;overflow-y:auto;
+  transform:scale(.92);transition:.24s cubic-bezier(.2,1.3,.5,1);box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.overlay.show .sheet{transform:scale(1);}
+.sheet h3{font-size:17px;font-weight:900;text-align:center;margin-bottom:4px;}
+.sheet .sub{font-size:11px;color:var(--dim);text-align:center;margin-bottom:14px;line-height:1.6;}
+.sheet .acts{display:flex;gap:9px;margin-top:16px;}
+.sheet .acts .btn{flex:1;font-size:14px;padding:12px;}
+
+/* ============ 角色选择 ============ */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.hero-item{
+  background:var(--card);border:1px solid var(--card-b);border-radius:15px;padding:11px;cursor:pointer;
+  transition:.15s;text-align:center;
+}
+.hero-item:active{transform:scale(.96);}
+.hero-item.on{border-color:var(--gold);background:rgba(255,217,61,.1);box-shadow:0 0 0 1px var(--gold) inset,0 6px 18px rgba(255,195,0,.2);}
+.hero-item .av{font-size:28px;line-height:1.1;}
+.hero-item .nm{font-size:12px;font-weight:800;margin-top:4px;}
+.hero-item .sk{font-size:9px;color:var(--gold);margin-top:2px;font-weight:700;}
+
+/* ============ 战斗页 ============ */
+.battle-hud{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;}
+.hud-pill{background:var(--card);border:1px solid var(--card-b);border-radius:9px;padding:5px 9px;}
+.hud-pill b{color:var(--gold);}
+
+.enemy-zone{
+  flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 4px;
+  position:relative;
+}
+.enemy-name{font-size:12px;font-weight:800;color:#FFB3C7;display:flex;align-items:center;gap:6px;}
+.enemy-hp-wrap{width:78%;height:11px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden;position:relative;border:1px solid rgba(255,77,109,.35);}
+.enemy-hp{height:100%;width:100%;background:linear-gradient(90deg,#FF6B8A,#FF4D6D);transition:width .4s;border-radius:6px;}
+.enemy-hp-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);}
+.enemy-sprite{
+  font-size:64px;line-height:1;filter:drop-shadow(0 8px 20px rgba(255,77,109,.35));
+  animation:idle 2.4s ease-in-out infinite;
+}
+@keyframes idle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.04)}}
+.enemy-sprite.hit{animation:enemyHit .4s;}
+@keyframes enemyHit{0%{transform:translateX(0)}20%{transform:translateX(-12px) scale(.94);filter:brightness(2)}50%{transform:translateX(10px)}100%{transform:translateX(0)}}
+.enemy-sprite.dead{animation:die .6s forwards;}
+@keyframes die{to{transform:scale(.3) rotate(60deg);opacity:0}}
+
+/* 答题卡 */
+.q-card{
+  flex:1;display:flex;flex-direction:column;justify-content:center;gap:11px;
+  background:linear-gradient(170deg,rgba(255,255,255,.075),rgba(255,255,255,.03));
+  border:1px solid var(--card-b);border-radius:20px;padding:15px;margin:6px 0;overflow:hidden;
+  position:relative;
+}
+.q-kind{
+  align-self:center;font-size:9px;font-weight:900;letter-spacing:2px;padding:4px 12px;border-radius:20px;
+  background:rgba(124,108,245,.28);color:#BFB3FF;border:1px solid rgba(124,108,245,.45);
+}
+.q-main-text{
+  text-align:center;font-size:20px;font-weight:800;line-height:1.55;letter-spacing:.5px;
+  word-break:break-word;
+}
+.q-main-text .en{font-family:Georgia,"Times New Roman",serif;font-size:23px;color:#FFF;}
+.q-main-text .cn{font-size:14px;color:var(--dim);margin-top:5px;display:block;font-weight:600;}
+.q-blank{
+  display:inline-block;min-width:56px;border-bottom:2px solid var(--gold);color:var(--gold);
+  padding:0 4px;font-weight:900;
+}
+.opts-b{display:flex;flex-direction:column;gap:8px;}
+.opt-b{
+  background:rgba(255,255,255,.07);border:1.5px solid var(--card-b);border-radius:13px;
+  padding:11px 14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);
+  cursor:pointer;transition:.14s;text-align:left;display:flex;align-items:center;gap:9px;
+}
+.opt-b .k{
+  width:22px;height:22px;flex:0 0 22px;border-radius:7px;background:rgba(255,255,255,.13);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--dim);
+}
+.opt-b:active{transform:scale(.985);background:rgba(255,255,255,.12);}
+.opt-b.right{background:rgba(77,227,138,.2);border-color:#4DE38A;color:#B7F5D0;}
+.opt-b.right .k{background:#4DE38A;color:#053A1D;}
+.opt-b.wrong{background:rgba(255,77,109,.18);border-color:#FF4D6D;color:#FFC4CF;animation:shakeX .34s;}
+.opt-b.wrong .k{background:#FF4D6D;color:#fff;}
+.opt-b.dim{opacity:.38;}
+@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}50%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+/* 拼写输入题 */
+.spell-in{
+  width:100%;background:rgba(0,0,0,.3);border:2px solid var(--card-b);border-radius:14px;
+  padding:13px;font-size:20px;font-family:Georgia,"Times New Roman",serif;letter-spacing:3px;
+  text-align:center;color:var(--gold);outline:none;
+}
+.spell-in:focus{border-color:var(--gold);}
+
+/* 玩家状态条 */
+.pc-battle{
+  display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--card-b);
+  border-radius:14px;padding:8px 11px;
+}
+.pc-battle .av{font-size:22px;}
+.pc-battle .bars{flex:1;}
+.pb-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;}
+.pb-lbl{font-size:8px;font-weight:900;color:var(--dim);width:16px;}
+.pb{flex:1;height:7px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;}
+.pb i{display:block;height:100%;border-radius:4px;transition:width .4s;}
+.pb.hp i{background:linear-gradient(90deg,#FF6B8A,#FF4D6D);}
+.pb.mp i{background:linear-gradient(90deg,#7CC4FF,#4DA3FF);}
+.pc-battle .combat-n{font-size:11px;font-weight:900;color:var(--gold);text-align:center;line-height:1.3;}
+.pc-battle .combat-n small{display:block;font-size:8px;color:var(--dim);}
+
+/* 伤害飘字 */
+.dmg{
+  position:absolute;font-size:26px;font-weight:900;pointer-events:none;z-index:60;
+  animation:dmgUp .9s ease-out forwards;text-shadow:0 2px 8px rgba(0,0,0,.6);
+}
+@keyframes dmgUp{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}20%{opacity:1;transform:translate(-50%,-4px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-58px) scale(1)}}
+
+/* 技能栏 */
+.skill-bar{display:flex;gap:7px;margin-top:6px;}
+.skill-btn{
+  flex:1;background:var(--card);border:1px solid var(--card-b);border-radius:13px;padding:8px 4px;
+  color:var(--ink);font-family:inherit;font-size:10px;font-weight:800;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;overflow:hidden;
+}
+.skill-btn .si{font-size:17px;}
+.skill-btn:active{transform:scale(.95);}
+.skill-btn .cd{
+  position:absolute;inset:0;background:rgba(10,8,26,.75);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:var(--dim);
+}
+.skill-btn.ready{border-color:rgba(255,217,61,.5);}
+
+/* ============ 结算 ============ */
+.result-hero{text-align:center;padding:10px 0 2px;}
+.big-ico{font-size:62px;display:inline-block;animation:popIn .6s cubic-bezier(.2,1.4,.5,1);}
+@keyframes popIn{0%{transform:scale(0) rotate(-40deg)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.res-title{font-size:22px;font-weight:900;margin-top:8px;}
+.res-sub{font-size:12px;color:var(--dim);margin-top:5px;font-weight:600;line-height:1.6;}
+.res-stars{display:flex;justify-content:center;gap:8px;font-size:28px;margin-top:8px;}
+.res-stars span{filter:grayscale(1) brightness(.5);transition:.3s;}
+.res-stars span.on{filter:none;animation:popIn .5s cubic-bezier(.2,1.4,.5,1) both;}
+.reward-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.rw{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:11px 4px;text-align:center;}
+.rw .v{font-size:17px;font-weight:900;color:var(--gold);}
+.rw .k{font-size:10px;color:var(--dim);font-weight:700;margin-top:2px;}
+.wrong-box{margin-top:12px;background:var(--card);border:1px solid var(--card-b);border-radius:16px;padding:13px;max-height:150px;overflow-y:auto;}
+.wrong-box h4{font-size:12px;font-weight:800;margin-bottom:8px;color:#FFB3C7;}
+.wrong-item{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 9px;border-radius:9px;
+  background:rgba(255,77,109,.1);margin-bottom:5px;font-size:12px;font-weight:700;
+}
+.wrong-item .w{color:#FF9FB3;text-decoration:line-through;text-decoration-thickness:1.5px;}
+.wrong-item .r{color:#7DFFB3;}
+
+/* ============ 角色/背包页 ============ */
+.tab-row{display:flex;gap:6px;margin-bottom:10px;}
+.tab{
+  flex:1;text-align:center;padding:9px;border-radius:11px;font-size:12px;font-weight:800;
+  background:var(--card);border:1px solid var(--card-b);cursor:pointer;
+}
+.tab.on{background:linear-gradient(180deg,#7C6CF5,#5342D6);border-color:#8E7FFF;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
+.equip-row{
+  display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-b);
+  border-radius:14px;padding:11px;margin-bottom:8px;
+}
+.equip-row .ei{font-size:24px;}
+.equip-row .einfo{flex:1;}
+.equip-row .en{font-size:13px;font-weight:800;}
+.equip-row .ed{font-size:10px;color:var(--dim);margin-top:2px;}
+.equip-row .buy{font-size:11px;font-weight:900;padding:7px 12px;border-radius:9px;border:none;background:var(--gold);color:#3A2A00;cursor:pointer;}
+.equip-row .buy:disabled{background:rgba(255,255,255,.13);color:var(--dim);}
+.equip-row.owned .buy{background:rgba(77,227,138,.25);color:#7DFFB3;}
+
+/* 统计页 */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat-c{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:12px;text-align:center;}
+.stat-c .v{font-size:19px;font-weight:900;color:var(--gold);}
+.stat-c .k{font-size:10px;color:var(--dim);font-weight:700;margin-top:2px;}
+
+/* toast */
+.toast{
+  position:absolute;left:50%;top:70px;transform:translate(-50%,-12px);
+  background:rgba(20,16,45,.95);border:1px solid var(--card-b);color:var(--ink);
+  font-size:12px;font-weight:700;padding:10px 18px;border-radius:13px;z-index:300;
+  opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5);
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+/* 升级弹窗 */
+.levelup{text-align:center;}
+.levelup .lu-ico{font-size:56px;animation:popIn .6s;}
+.levelup .lu-t{font-size:20px;font-weight:900;color:var(--gold);margin-top:6px;}
+.levelup .lu-d{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.7;}
+
+@keyframes fall{to{transform:translateY(110vh) rotate(500deg);opacity:.1}}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:120;}
+@media (max-height:680px){
+  .logo-island{width:56px;height:56px;font-size:26px}
+  .game-title{font-size:22px} .logo-area{padding:6px 0 2px}
+  .enemy-sprite{font-size:48px} .q-main-text{font-size:17px}
+  .q-main-text .en{font-size:19px} .q-card{padding:11px;gap:8px}
+  .map-card{min-height:74px;padding:9px} .sec-title{margin:9px 0 7px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ============ 首页 ============ -->
+<section class="screen active" id="screen-home">
+  <div class="hero-top">
+    <div class="player-card">
+      <div class="pc-avatar" id="homeAvatar">🧙</div>
+      <div class="pc-info">
+        <div class="pc-name"><span id="homeName">冒险者</span><span class="lv-badge">Lv.<span id="homeLv">1</span></span></div>
+        <div class="pc-bar"><i id="homeExpBar" style="width:0%"></i></div>
+      </div>
+    </div>
+    <div class="coin-box">🪙 <span id="homeCoin">0</span></div>
+  </div>
+
+  <div class="logo-area">
+    <div class="logo-island">🏝️</div>
+    <div class="game-title">英语冒险岛</div>
+    <div class="game-sub">答对出招 · 答错受伤 · 打怪升级</div>
+  </div>
+
+  <div class="sec-title">选择学段<span class="hint" id="stageHint">词汇难度</span></div>
+  <div class="stage-row" id="stageRow"></div>
+
+  <div class="sec-title">选择冒险地图</div>
+  <div class="map-grid" id="mapGrid"></div>
+
+  <div class="home-foot">
+    <button class="btn dark" id="btnHero">🧑‍🚀 角色</button>
+    <button class="btn dark" id="btnBag">🎒 商店</button>
+    <button class="btn blue" id="btnStats">📊 战绩</button>
+  </div>
+</section>
+
+<!-- ============ 战斗页 ============ -->
+<section class="screen" id="screen-battle">
+  <div class="battle-hud">
+    <button class="icon-btn" id="btnFlee">✕</button>
+    <div class="hud-pill">🎯 第 <b id="waveNum">1</b>/<b id="waveTotal">5</b> 关</div>
+    <div class="hud-pill">🪙 <b id="battleCoin">0</b></div>
+    <div class="hud-pill" style="margin-left:auto">⚡ <b id="battleCombo">0</b></div>
+  </div>
+
+  <div class="enemy-zone">
+    <div class="enemy-name" id="enemyName">史莱姆</div>
+    <div class="enemy-hp-wrap">
+      <div class="enemy-hp" id="enemyHp"></div>
+      <div class="enemy-hp-txt" id="enemyHpTxt">100 / 100</div>
+    </div>
+    <div class="enemy-sprite" id="enemySprite">👾</div>
+  </div>
+
+  <div class="q-card" id="qCard"></div>
+
+  <div class="pc-battle">
+    <div class="av" id="battleAvatar">🧙</div>
+    <div class="bars">
+      <div class="pb-row"><span class="pb-lbl">HP</span><div class="pb hp"><i id="pHp" style="width:100%"></i></div></div>
+      <div class="pb-row"><span class="pb-lbl">MP</span><div class="pb mp"><i id="pMp" style="width:100%"></i></div></div>
+    </div>
+    <div class="combat-n"><span id="pHpTxt">100</span><small>生命</small></div>
+  </div>
+
+  <div class="skill-bar">
+    <button class="skill-btn" id="skHeal"><span class="si">💚</span>治疗<div class="cd" id="cdHeal" style="display:none">3</div></button>
+    <button class="skill-btn" id="skBomb"><span class="si">💥</span>暴击<div class="cd" id="cdBomb" style="display:none">3</div></button>
+    <button class="skill-btn" id="skHint"><span class="si">💡</span>提示<div class="cd" id="cdHint" style="display:none">3</div></button>
+  </div>
+</section>
+
+<!-- ============ 结算 ============ -->
+<section class="screen" id="screen-result">
+  <div class="scroll-area">
+    <div class="result-hero">
+      <div class="big-ico" id="resIco">🏆</div>
+      <div class="res-title" id="resTitle">闯关成功！</div>
+      <div class="res-sub" id="resSub"></div>
+      <div class="res-stars" id="resStars"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+    </div>
+    <div class="reward-row">
+      <div class="rw"><div class="v" id="rwRight">0</div><div class="k">答对</div></div>
+      <div class="rw"><div class="v" id="rwExp">+0</div><div class="k">经验</div></div>
+      <div class="rw"><div class="v" id="rwCoin">+0</div><div class="k">金币</div></div>
+    </div>
+    <div class="wrong-box" id="wrongBox" style="display:none">
+      <h4>❌ 错题复习</h4>
+      <div id="wrongList"></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;padding-top:10px;">
+    <button class="btn dark" id="btnResHome" style="flex:1;font-size:14px;">返回地图</button>
+    <button class="btn" id="btnResAgain" style="flex:1;font-size:14px;">再来一次</button>
+  </div>
+</section>
+
+<!-- ============ 角色页 ============ -->
+<section class="screen" id="screen-hero">
+  <div class="battle-hud" style="margin-bottom:10px;">
+    <button class="icon-btn" id="btnHeroBack">←</button>
+    <div class="hud-pill" style="font-size:13px;">选择出战角色</div>
+    <div class="hud-pill" style="margin-left:auto">🪙 <span id="heroCoin">0</span></div>
+  </div>
+  <div class="scroll-area">
+    <div class="hero-grid" id="heroGrid"></div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim);line-height:1.8;padding:0 2px;">
+      💡 不同角色有不同能力加成，答对题目会累计连击（Combo），连击越高伤害越大。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 商店页 ============ -->
+<section class="screen" id="screen-shop">
+  <div class="battle-hud" style="margin-bottom:10px;">
+    <button class="icon-btn" id="btnShopBack">←</button>
+    <div class="hud-pill" style="font-size:13px;">道具商店</div>
+    <div class="hud-pill" style="margin-left:auto">🪙 <span id="shopCoin">0</span></div>
+  </div>
+  <div class="scroll-area" id="shopList"></div>
+</section>
+
+<!-- ============ 战绩页 ============ -->
+<section class="screen" id="screen-stats">
+  <div class="battle-hud" style="margin-bottom:10px;">
+    <button class="icon-btn" id="btnStatsBack">←</button>
+    <div class="hud-pill" style="font-size:13px;">我的战绩</div>
+  </div>
+  <div class="scroll-area">
+    <div class="stat-grid" id="statsGrid"></div>
+    <div class="sec-title" style="margin-top:16px;">🗺️ 地图进度</div>
+    <div id="mapProgress"></div>
+    <div style="margin-top:18px;text-align:center;">
+      <button class="btn dark" id="btnResetAll" style="font-size:12px;padding:10px 20px;">🔄 重置全部进度</button>
+    </div>
+  </div>
+</section>
+
+<!-- 弹窗 -->
+<div class="overlay" id="ovFlee">
+  <div class="sheet">
+    <h3>确定撤退吗？</h3>
+    <div class="sub">本次战斗的奖励将不会保存</div>
+    <div class="acts">
+      <button class="btn dark" id="fleeNo">继续战斗</button>
+      <button class="btn pink" id="fleeYes">撤退</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="ovLevelUp">
+  <div class="sheet levelup">
+    <div class="lu-ico">🎊</div>
+    <div class="lu-t">升级啦！</div>
+    <div class="lu-d" id="luDetail"></div>
+    <div class="acts"><button class="btn wide" id="luOk">太棒了</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="ovHeroPick">
+  <div class="sheet">
+    <h3>🧑‍🚀 选择你的英雄</h3>
+    <div class="sub">每位英雄都有独特技能与属性加成</div>
+    <div class="hero-grid" id="pickHeroGrid"></div>
+    <div class="acts"><button class="btn wide" id="pickHeroOk">确定出战</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const DEBUG = /[?&]debug=1/.test(location.search);
+const rnd = n => Math.floor(Math.random()*n);
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+/* ================== 词库 ==================
+   {w:'word', c:'中文', t:'题型'}  t: m=选中文 e=选英文 s=拼写
+   level: 1(小学) 2(初中) 3(高中) 4(成人)
+========================================== */
+const VOCAB = {
+1:[ // 小学
+ {w:'apple',c:'苹果'},{w:'banana',c:'香蕉'},{w:'orange',c:'橙子'},{w:'tiger',c:'老虎'},{w:'monkey',c:'猴子'},
+ {w:'rabbit',c:'兔子'},{w:'elephant',c:'大象'},{w:'panda',c:'熊猫'},{w:'school',c:'学校'},{w:'teacher',c:'老师'},
+ {w:'student',c:'学生'},{w:'pencil',c:'铅笔'},{w:'book',c:'书'},{w:'water',c:'水'},{w:'bread',c:'面包'},
+ {w:'milk',c:'牛奶'},{w:'happy',c:'快乐的'},{w:'angry',c:'生气的'},{w:'run',c:'跑'},{w:'jump',c:'跳'},
+ {w:'swim',c:'游泳'},{w:'sing',c:'唱歌'},{w:'dance',c:'跳舞'},{w:'red',c:'红色'},{w:'blue',c:'蓝色'},
+ {w:'green',c:'绿色'},{w:'yellow',c:'黄色'},{w:'mother',c:'妈妈'},{w:'father',c:'爸爸'},{w:'friend',c:'朋友'},
+ {w:'family',c:'家庭'},{w:'cat',c:'猫'},{w:'dog',c:'狗'},{w:'fish',c:'鱼'},{w:'bird',c:'鸟'},
+ {w:'tree',c:'树'},{w:'flower',c:'花'},{w:'rain',c:'雨'},{w:'snow',c:'雪'},{w:'sun',c:'太阳'},
+ {w:'moon',c:'月亮'},{w:'star',c:'星星'},{w:'door',c:'门'},{w:'window',c:'窗户'},{w:'chair',c:'椅子'},
+ {w:'table',c:'桌子'},{w:'morning',c:'早上'},{w:'night',c:'夜晚'},{w:'today',c:'今天'},{w:'tomorrow',c:'明天'}
+],
+2:[ // 初中
+ {w:'environment',c:'环境'},{w:'pollution',c:'污染'},{w:'protect',c:'保护'},{w:'improve',c:'改善；提高'},
+ {w:'achieve',c:'实现；达到'},{w:'encourage',c:'鼓励'},{w:'experience',c:'经历；经验'},{w:'confidence',c:'信心'},
+ {w:'decision',c:'决定'},{w:'influence',c:'影响'},{w:'independent',c:'独立的'},{w:'responsible',c:'负责任的'},
+ {w:'opportunity',c:'机会'},{w:'challenge',c:'挑战'},{w:'imagine',c:'想象'},{w:'discover',c:'发现'},
+ {w:'develop',c:'发展'},{w:'increase',c:'增加'},{w:'reduce',c:'减少'},{w:'suggest',c:'建议'},
+ {w:'volunteer',c:'志愿者'},{w:'traditional',c:'传统的'},{w:'culture',c:'文化'},{w:'communicate',c:'交流'},
+ {w:'appreciate',c:'感激；欣赏'},{w:'consider',c:'考虑'},{w:'continue',c:'继续'},{w:'describe',c:'描述'},
+ {w:'except',c:'除…之外'},{w:'express',c:'表达'},{w:'introduce',c:'介绍'},{w:'manage',c:'设法完成；管理'},
+ {w:'prevent',c:'阻止'},{w:'realize',c:'意识到'},{w:'receive',c:'收到'},{w:'support',c:'支持'},
+ {w:'prepare',c:'准备'},{w:'impossible',c:'不可能的'},{w:'confident',c:'自信的'},{w:'curious',c:'好奇的'},
+ {w:'generous',c:'慷慨的'},{w:'patient',c:'有耐心的'},{w:'polite',c:'有礼貌的'},{w:'serious',c:'严肃的'},
+ {w:'successful',c:'成功的'},{w:'ancient',c:'古代的'},{w:'modern',c:'现代的'},{w:'private',c:'私人的'},
+ {w:'public',c:'公共的'},{w:'strange',c:'奇怪的'}
+],
+3:[ // 高中
+ {w:'abandon',c:'放弃；抛弃'},{w:'accomplish',c:'完成'},{w:'accurate',c:'准确的'},{w:'adapt',c:'适应'},
+ {w:'adequate',c:'足够的'},{w:'advocate',c:'提倡；拥护'},{w:'analyze',c:'分析'},{w:'approach',c:'接近；方法'},
+ {w:'appropriate',c:'恰当的'},{w:'assume',c:'假定；认为'},{w:'authority',c:'权威；当局'},{w:'available',c:'可获得的'},
+ {w:'awareness',c:'意识'},{w:'benefit',c:'益处；受益'},{w:'capacity',c:'能力；容量'},{w:'circumstance',c:'环境；情况'},
+ {w:'complex',c:'复杂的'},{w:'conclude',c:'得出结论'},{w:'consequence',c:'后果'},{w:'considerable',c:'相当大的'},
+ {w:'contribute',c:'贡献'},{w:'convince',c:'使信服'},{w:'current',c:'当前的；水流'},{w:'declare',c:'宣布'},
+ {w:'decline',c:'下降；婉拒'},{w:'demonstrate',c:'证明；演示'},{w:'distinguish',c:'区分'},{w:'efficient',c:'高效的'},
+ {w:'element',c:'要素'},{w:'eliminate',c:'消除'},{w:'emerge',c:'出现'},{w:'emphasize',c:'强调'},
+ {w:'essential',c:'必不可少的'},{w:'establish',c:'建立'},{w:'evaluate',c:'评估'},{w:'evidence',c:'证据'},
+ {w:'expand',c:'扩大'},{w:'fundamental',c:'根本的'},{w:'generate',c:'产生'},{w:'identify',c:'识别'},
+ {w:'impact',c:'影响；冲击'},{w:'indicate',c:'表明'},{w:'inevitable',c:'不可避免的'},{w:'maintain',c:'维持'},
+ {w:'obtain',c:'获得'},{w:'perceive',c:'察觉'},{w:'potential',c:'潜在的；潜力'},{w:'preserve',c:'保存'},
+ {w:'priority',c:'优先事项'},{w:'reveal',c:'揭示'}
+],
+4:[ // 成人
+ {w:'negotiate',c:'谈判；协商'},{w:'deadline',c:'截止日期'},{w:'invoice',c:'发票'},{w:'revenue',c:'收入；营业额'},
+ {w:'budget',c:'预算'},{w:'strategy',c:'战略'},{w:'schedule',c:'日程安排'},{w:'confirm',c:'确认'},
+ {w:'postpone',c:'推迟'},{w:'attach',c:'附上；附加'},{w:'feedback',c:'反馈'},{w:'colleague',c:'同事'},
+ {w:'customer',c:'客户'},{w:'promotion',c:'促销；晋升'},{w:'contract',c:'合同'},{w:'deposit',c:'押金；存款'},
+ {w:'refund',c:'退款'},{w:'warranty',c:'保修'},{w:'itinerary',c:'行程单'},{w:'reservation',c:'预订'},
+ {w:'boarding',c:'登机'},{w:'luggage',c:'行李'},{w:'delay',c:'延误'},{w:'transfer',c:'转机；转账'},
+ {w:'checkout',c:'结账退房'},{w:'complaint',c:'投诉'},{w:'apologize',c:'道歉'},{w:'recommend',c:'推荐'},
+ {w:'urgent',c:'紧急的'},{w:'available',c:'有空的；可用的'},{w:'convenient',c:'方便的'},{w:'efficient',c:'高效的'},
+ {w:'professional',c:'专业的'},{w:'responsible',c:'负责任的'},{w:'reliable',c:'可靠的'},{w:'flexible',c:'灵活的'},
+ {w:'initiative',c:'主动性'},{w:'insight',c:'洞察力'},{w:'outcome',c:'结果'},{w:'resource',c:'资源'},
+ {w:'priority',c:'优先权'},{w:'procedure',c:'流程'},{w:'policy',c:'政策'},{w:'update',c:'更新'},
+ {w:'remind',c:'提醒'},{w:'suggest',c:'建议'},{w:'arrange',c:'安排'},{w:'approve',c:'批准'}
+]
+};
+
+/* ================== 主题地图 ================== */
+const MAPS = [
+  {id:'space', nm:'太空基地', ico:'🚀', sub:'外星入侵', bg:'linear-gradient(140deg,#2B1B5E,#4B2C8F 50%,#1A1040)',
+   enemies:[['👾','小行星怪'],['🛸','侦察飞碟'],['👽','外星步兵'],['🤖','机械护卫'],['🛰️','轨道炮台']], boss:['🐙','虫族母舰']},
+  {id:'zoo', nm:'疯狂动物园', ico:'🦁', sub:'出逃的野兽', bg:'linear-gradient(140deg,#1E5B3A,#2E8B57 50%,#123A25)',
+   enemies:[['🐍','迷路的蛇'],['🐗','暴躁野猪'],['🦍','守卫大猩猩'],['🐊','沼泽巨鳄'],['🦅','俯冲猎鹰']], boss:['🐘','象王']},
+  {id:'forest', nm:'魔法森林', ico:'🌲', sub:'精灵试炼', bg:'linear-gradient(140deg,#123A2E,#1F6B52 50%,#0B241C)',
+   enemies:[['🍄','毒蘑菇精'],['🦉','夜枭预言者'],['🐺','幽影狼'],['🕷️','织网巨蛛'],['🧚','迷幻精灵']], boss:['🐉','古树龙']},
+  {id:'zombie', nm:'僵尸废墟', ico:'🧟', sub:'末日求生', bg:'linear-gradient(140deg,#2A2A2A,#4A4A3A 50%,#171717)',
+   enemies:[['🧟','蹒跚僵尸'],['🦴','骷髅兵'],['👻','怨灵'],['🕸️','巢穴守卫'],['🧟‍♂️','狂暴尸群']], boss:['💀','尸王']},
+  {id:'snow', nm:'白雪公主', ico:'🍎', sub:'毒苹果诅咒', bg:'linear-gradient(140deg,#1B3A5C,#2E6B9E 50%,#102438)',
+   enemies:[['🪞','魔镜幻影'],['🧹','扫帚怪'],['🐦','乌鸦密探'],['🍎','毒苹果藤'],['🥀','荆棘女巫']], boss:['👑','邪恶王后']},
+  {id:'hood', nm:'小红帽', ico:'🐺', sub:'森林深处的狼', bg:'linear-gradient(140deg,#5C2A1B,#8F4A2C 50%,#331714)',
+   enemies:[['🌰','滚石松果'],['🦇','暗夜蝙蝠'],['🐗','野猪守卫'],['🍄','迷魂蘑菇'],['👵','伪装的狼']], boss:['🐺','大灰狼']},
+  {id:'cinder', nm:'灰姑娘', ico:'👠', sub:'午夜钟声', bg:'linear-gradient(140deg,#3A2456,#6B4A8F 50%,#1F1330)',
+   enemies:[['🐭','老鼠仆从'],['🎃','南瓜魔'],['⏰','失控时钟'],['🪶','羽毛风暴'],['🪄','恶咒仙女']], boss:['👑','继母']},
+  {id:'mermaid', nm:'美人鱼', ico:'🧜', sub:'深海秘境', bg:'linear-gradient(140deg,#0C3B5C,#1470A8 50%,#06202F)',
+   enemies:[['🐙','章鱼爪牙'],['🦈','鲨鱼巡卫'],['🪼','水母陷阱'],['🐚','巨型贝壳'],['🦑','深海乌贼']], boss:['🌊','海巫']},
+  {id:'sleeping', nm:'睡美人', ico:'🌹', sub:'百年沉睡', bg:'linear-gradient(140deg,#4A1B3A,#8F3A6B 50%,#2A0F21)',
+   enemies:[['🌵','荆棘藤'],['🕯️','亡烛'],['🐉','幼龙'],['🪡','纺锤精灵'],['🌫️','迷雾幽灵']], boss:['🧙‍♀️','黑魔女']},
+  {id:'king', nm:'王者峡谷', ico:'⚔️', sub:'英雄对决', bg:'linear-gradient(140deg,#3D2B10,#8F6B2A 50%,#22180A)',
+   enemies:[['🗡️','刺客'],['🛡️','重装兵'],['🏹','神射手'],['🔮','法师'],['🐴','骑兵']], boss:['👑','峡谷之主']},
+  {id:'history', nm:'名将战场', ico:'🏯', sub:'千古风流', bg:'linear-gradient(140deg,#4A1414,#8F2E2E 50%,#280B0B)',
+   enemies:[['🐎','铁骑'],['🏹','连弩营'],['🛞','冲车'],['🗡️','刀盾兵'],['🎖️','先锋将']], boss:['🐲','霸王']}
+];
+
+/* ================== 角色 ================== */
+const HEROES = [
+  {id:'mage', nm:'魔法师', av:'🧙', desc:'知识就是魔法', sk:'答题经验 +15%', expBonus:.15, hp:100, dmg:10},
+  {id:'knight', nm:'圣骑士', av:'🛡️', desc:'坚韧不拔的守护者', sk:'生命上限 +30', expBonus:0, hp:130, dmg:10},
+  {id:'archer', nm:'精灵射手', av:'🏹', desc:'一击致命', sk:'答对伤害 +3', expBonus:0, hp:100, dmg:13},
+  {id:'fairy', nm:'自然精灵', av:'🧚', desc:'万物之友', sk:'金币收益 +30%', expBonus:0, hp:100, dmg:10, coinBonus:.3},
+  {id:'ninja', nm:'暗影忍者', av:'🥷', desc:'速度决定胜负', sk:'答对回血 3 点', expBonus:0, hp:100, dmg:10, healOnHit:3},
+  {id:'king', nm:'王者剑客', av:'🗡️', desc:'峡谷的意志', sk:'暴击率更高', expBonus:.05, hp:110, dmg:12},
+  {id:'mulan', nm:'花木兰', av:'🐎', desc:'巾帼不让须眉', sk:'初始 MP +2', expBonus:.1, hp:105, dmg:11},
+  {id:'monkey', nm:'齐天大圣', av:'🐒', desc:'七十二变', sk:'答错扣血 -2', expBonus:.1, hp:110, dmg:12, reduceDmg:2}
+];
+
+/* ================== 商店道具 ================== */
+const ITEMS = [
+  {id:'potion', nm:'生命药水', ico:'🧪', desc:'战斗中自动生效：开局 +25 生命', price:60},
+  {id:'amulet', nm:'智慧护符', ico:'📿', desc:'经验值 +20%', price:150},
+  {id:'ring', nm:'黄金戒指', ico:'💍', desc:'金币 +25%', price:130},
+  {id:'boots', nm:'疾风靴', ico:'👢', desc:'答对伤害 +4', price:180},
+  {id:'cloak', nm:'隐形斗篷', ico:'🧥', desc:'答错少扣 4 点生命', price:200},
+  {id:'crown', nm:'王者之冠', ico:'👑', desc:'全部收益 +15%', price:400}
+];
+
+/* ================== 存档 ================== */
+const LS = 'english_island_v1';
+function defaultSave(){
+  return {
+    lv:1, exp:0, coin:0, hero:'mage', stage:1,
+    items:[], stars:{}, totalRight:0, totalWrong:0, battles:0,
+    heroOf:{} // 地图最高波次记录
+  };
+}
+let save = loadSave();
+function loadSave(){
+  try{
+    const d = JSON.parse(localStorage.getItem(LS));
+    if(d && typeof d.lv === 'number'){ return Object.assign(defaultSave(), d); }
+  }catch(e){}
+  return defaultSave();
+}
+function persist(){ try{ localStorage.setItem(LS, JSON.stringify(save)); }catch(e){} }
+const expNeed = lv => 100 + (lv-1)*60;
+const heroObj = () => HEROES.find(h=>h.id===save.hero) || HEROES[0];
+
+/* ================== 音效 ================== */
+let actx=null;
+function ac(){ if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}} if(actx&&actx.state==='suspended')actx.resume(); return actx; }
+function tone(f1,f2,dur,type,vol){
+  const c=ac(); if(!c)return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.connect(g);g.connect(c.destination);o.type=type||'sine';
+  o.frequency.setValueAtTime(f1,c.currentTime);
+  if(f2)o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+dur*.7);
+  g.gain.setValueAtTime(vol||.06,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
+  o.start();o.stop(c.currentTime+dur+.02);
+}
+const sHit=()=>{tone(880,1400,.12,'square',.05);};
+const sMiss=()=>{tone(320,160,.22,'sawtooth',.06);};
+const sDie=()=>{tone(600,120,.4,'triangle',.07);};
+const sClick=()=>tone(520,null,.05,'sine',.04);
+const sLevel=()=>{tone(660,1320,.35,'triangle',.09);};
+
+/* ================== 首页 ================== */
+function renderHome(){
+  const h = heroObj();
+  $('#homeAvatar').textContent = h.av;
+  $('#homeName').textContent = h.nm;
+  $('#homeLv').textContent = save.lv;
+  $('#homeExpBar').style.width = Math.min(100, save.exp/expNeed(save.lv)*100) + '%';
+  $('#homeCoin').textContent = save.coin;
+
+  $('#stageRow').innerHTML = [
+    ['1','小学','📚'],['2','初中','🎒'],['3','高中','🎓'],['4','成人','💼']
+  ].map(([id,nm,ico])=>`<div class="stage-pill ${save.stage==id?'on':''}" data-s="${id}">
+    <div class="g">${ico}</div><div class="t">${nm}</div></div>`).join('');
+  $$('#stageRow .stage-pill').forEach(el=>{
+    el.onclick=()=>{ sClick(); save.stage=+el.dataset.s; persist(); renderHome(); };
+  });
+
+  $('#mapGrid').innerHTML = MAPS.map(m=>{
+    const st = save.stars[m.id+'_'+save.stage] || 0;
+    const locked = (save.totalRight||0) < 0; // 全解锁
+    return `<div class="map-card" data-id="${m.id}">
+      <div class="bg" style="background:${m.bg}"></div>
+      <div class="ico">${m.ico}</div>
+      <div class="stars-line">${'⭐'.repeat(st)}</div>
+      <div class="nm">${m.nm}</div>
+      <div class="sub">${m.sub}</div>
+    </div>`;
+  }).join('');
+  $$('#mapGrid .map-card').forEach(el=>{
+    el.onclick=()=>{ sClick(); startBattle(el.dataset.id); };
+  });
+}
+
+/* ================== 战斗状态 ================== */
+const B = {
+  map:null, mapId:'', wave:1, totalWave:5,
+  hp:100, maxHp:100, mp:5, maxMp:5,
+  enemyHp:100, enemyMaxHp:100, enemyName:'', enemyIco:'', isBoss:false,
+  combo:0, maxCombo:0, right:0, wrong:0, coin:0, exp:0,
+  q:null, locked:false, wrongList:[],
+  cd:{heal:0,bomb:0,hint:0},
+  hintUsed:false, bombNext:false, healed:false, emergency:false
+};
+
+function startBattle(mapId){
+  const m = MAPS.find(x=>x.id===mapId);
+  const h = heroObj();
+  B.map = m; B.mapId = mapId;
+  B.wave = 1; B.totalWave = 6; // 5 小怪 + 1 boss
+  B.maxHp = h.hp + (save.items.includes('potion')?0:0);
+  B.hp = B.maxHp;
+  if(save.items.includes('potion')) B.hp = Math.min(B.maxHp, B.hp + 25);
+  B.maxMp = save.items.includes('amulet')?7:6;
+  B.mp = B.maxMp;
+  B.combo=0; B.maxCombo=0; B.right=0; B.wrong=0; B.coin=0; B.exp=0;
+  B.wrongList=[]; B.cd={heal:0,bomb:0,hint:0}; B.bombNext=false; B.emergency=false;
+  $('#battleAvatar').textContent = h.av;
+  $('#battleCoin').textContent = '0';
+  $('#waveTotal').textContent = B.totalWave;
+  showScreen('screen-battle');
+  spawnEnemy();
+}
+
+function spawnEnemy(){
+  const isBoss = B.wave === B.totalWave;
+  const idx = B.wave - 1;
+  let ico, nm, hpBase;
+  if(isBoss){
+    ico = B.map.boss[0]; nm = B.map.boss[1];
+    hpBase = 5; // 5题
+  }else{
+    const e = B.map.enemies[Math.min(idx, B.map.enemies.length-1)];
+    ico = e[0]; nm = e[1];
+    hpBase = 1;
+  }
+  B.isBoss = isBoss;
+  B.enemyName = nm; B.enemyIco = ico;
+  B.enemyMaxHp = isBoss ? 100 : 100;
+  B.enemyHp = 100;
+  B.bossLeft = isBoss ? 5 : 1; // 需答对次数
+  B.bossTotal = B.bossLeft;
+
+  $('#enemyName').textContent = (isBoss?'👑 BOSS · ':'') + nm;
+  const sp = $('#enemySprite');
+  sp.textContent = ico;
+  sp.className = 'enemy-sprite';
+  sp.style.fontSize = isBoss ? '78px' : '64px';
+  updateEnemyHp();
+  $('#waveNum').textContent = B.wave;
+  renderQuestion();
+}
+
+function updateEnemyHp(){
+  const pct = Math.max(0, B.enemyHp);
+  $('#enemyHp').style.width = pct + '%';
+  const shown = B.isBoss
+    ? Math.ceil(B.bossLeft) + ' 击剩余'
+    : Math.ceil(pct) + '%';
+  $('#enemyHpTxt').textContent = shown;
+}
+
+function updatePlayerHud(){
+  $('#pHp').style.width = Math.max(0,B.hp/B.maxHp*100) + '%';
+  $('#pMp').style.width = Math.max(0,B.mp/B.maxMp*100) + '%';
+  $('#pHpTxt').textContent = Math.max(0,Math.round(B.hp));
+  $('#battleCombo').textContent = B.combo;
+  const h = heroObj();
+  ['heal','bomb','hint'].forEach(k=>{
+    const el = $('#cd'+k.charAt(0).toUpperCase()+k.slice(1));
+    if(!el) return;
+    if(B.cd[k] > 0){ el.style.display='flex'; el.textContent = B.cd[k]; }
+    else el.style.display='none';
+  });
+}
+
+/* ================== 出题 ================== */
+function makeQuestion(){
+  const pool = VOCAB[save.stage] || VOCAB[1];
+  const item = pool[rnd(pool.length)];
+  // 题型：60% 选中文, 25% 选英文, 15% 拼写（仅当词长<=9）
+  const r = Math.random();
+  let type = r < .6 ? 'm' : r < .85 ? 'e' : 's';
+  if(type==='s' && item.w.length > 10) type = 'm';
+
+  const others = shuffle(pool.filter(x=>x.w!==item.w)).slice(0,3);
+  if(type==='m'){
+    return {t:'m', word:item.w, ans:item.c, opts:shuffle([item.c, ...others.map(o=>o.c)])};
+  }else if(type==='e'){
+    return {t:'e', word:item.w, ans:item.w, cn:item.c, opts:shuffle([item.w, ...others.map(o=>o.w)])};
+  }else{
+    // 拼写：给中文首字母提示
+    return {t:'s', word:item.w, ans:item.w, cn:item.c};
+  }
+}
+
+function renderQuestion(){
+  B.q = makeQuestion();
+  B.locked = false; B.hintUsed = false;
+  const q = B.q;
+  const card = $('#qCard');
+  const kindMap = {m:'选中文意思', e:'选英文单词', s:'拼写单词'};
+  let html = `<div class="q-kind">${kindMap[q.t]}</div>`;
+
+  if(q.t === 'm'){
+    html += `<div class="q-main-text"><span class="en">${q.word}</span><span class="cn">这个词是什么意思？</span></div>
+      <div class="opts-b">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else if(q.t === 'e'){
+    html += `<div class="q-main-text"><span class="cn" style="font-size:20px;color:#fff">${q.cn}</span><span class="cn">选出对应的英文单词</span></div>
+      <div class="opts-b">${q.opts.map((o,i)=>
+        `<button class="opt-b" data-v="${o}" style="font-family:Georgia,serif"><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>`;
+  }else{
+    const hint = q.ans[0] + '_ '.repeat(q.ans.length-1).trim();
+    html += `<div class="q-main-text"><span class="cn" style="font-size:22px;color:#fff">${q.cn}</span>
+      <span class="cn">拼出这个单词（${q.ans.length} 个字母）</span></div>
+      <div style="text-align:center;font-family:Georgia,serif;font-size:18px;letter-spacing:6px;color:var(--gold)" id="spellHint">${hint}</div>
+      <input class="spell-in" id="spellInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="输入英文单词">
+      <button class="btn wide" id="spellSubmit" style="font-size:15px;padding:12px;">确定</button>`;
+  }
+  card.innerHTML = html;
+
+  if(q.t==='s'){
+    const inp = $('#spellInput');
+    inp.addEventListener('input', ()=>{
+      const v = inp.value.toUpperCase();
+      const hint = q.ans.toUpperCase().split('').map((ch,i)=> v[i]===ch ? ch : '_').join(' ');
+      $('#spellHint').textContent = hint;
+    });
+    $('#spellSubmit').onclick = ()=> checkSpell();
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') checkSpell(); });
+    setTimeout(()=>{ try{ inp.focus(); }catch(e){} }, 200);
+  }else{
+    $$('#qCard .opt-b').forEach(b=>{
+      b.onclick = ()=> answerChoice(b, b.dataset.v);
+    });
+  }
+  updatePlayerHud();
+}
+
+function checkSpell(){
+  if(B.locked) return;
+  const inp = $('#spellInput');
+  const v = (inp.value||'').trim().toLowerCase();
+  settle(v === B.q.ans.toLowerCase());
+}
+
+function answerChoice(btn, val){
+  if(B.locked) return;
+  const ok = val === B.q.ans;
+  if(!ok){
+    btn.classList.add('wrong');
+    $$('#qCard .opt-b').forEach(b=>{
+      if(b.dataset.v === B.q.ans) b.classList.add('right');
+      else if(b!==btn) b.classList.add('dim');
+    });
+  }else{
+    btn.classList.add('right');
+  }
+  settle(ok);
+}
+
+/* ================== 战斗结算 ================== */
+function settle(ok){
+  B.locked = true;
+  const h = heroObj();
+  const atkPower = (h.dmg||10) + (save.items.includes('boots')?4:0);
+
+  if(ok){
+    B.right++; B.combo++;
+    if(B.combo > B.maxCombo) B.maxCombo = B.combo;
+    // 伤害 = 基础 + 连击加成
+    let dmg = atkPower + Math.min(10, B.combo-1)*2;
+    if(B.bombNext){ dmg *= 2; B.bombNext = false; }
+    if(h.healOnHit){ B.hp = Math.min(B.maxHp, B.hp + h.healOnHit); }
+
+    // 敌人受伤
+    if(B.isBoss){
+      B.bossLeft--;
+      B.enemyHp = B.bossLeft / B.bossTotal * 100;
+    }else{
+      B.enemyHp = 0;
+    }
+    updateEnemyHp();
+    showDmg('-'+dmg, '#FFD93D');
+    $('#enemySprite').classList.add('hit');
+    setTimeout(()=>$('#enemySprite').classList.remove('hit'), 420);
+    sHit();
+
+    // 每次答对得金币/经验
+    const coinGain = 3 + Math.min(5,B.combo);
+    B.coin += coinGain;
+    B.exp += 10;
+    $('#battleCoin').textContent = B.coin;
+
+    B.locked = true;
+    setTimeout(()=>{
+      if(B.enemyHp <= 0.5 && (!B.isBoss || B.bossLeft<=0)){
+        killEnemy();
+      }else{
+        B.locked=false;
+        renderQuestion();
+      }
+    }, 620);
+  }else{
+    B.wrong++; B.combo = 0;
+    let dmg = 8;
+    if(h.reduceDmg) dmg -= h.reduceDmg;
+    if(save.items.includes('cloak')) dmg -= 4;
+    dmg = Math.max(3, dmg);
+    B.hp -= dmg;
+    showDmg('-'+dmg, '#FF4D6D');
+    sMiss();
+    B.wrongList.push({q:B.q.word, ans:B.q.t==='m'?B.q.ans:B.q.word, cn:B.q.cn||B.q.ans});
+    updatePlayerHud();
+
+    // 低血保护：首次进入危险线自动回血一次，避免新手一步卡死
+    if(!B.emergency && B.hp > 0 && B.hp <= B.maxHp*0.3){
+      B.emergency = true;
+      B.hp = Math.min(B.maxHp, B.hp + 35);
+      setTimeout(()=>{ toast('💚 危急时刻！精灵之力为你回复 35 点生命'); }, 500);
+      updatePlayerHud();
+    }
+
+    if(B.hp <= 0){ B.hp = 0; updatePlayerHud(); setTimeout(()=>gameOver(), 700); return; }
+
+    B.locked = true;
+    setTimeout(()=>{ B.locked=false; renderQuestion(); }, 1150);
+  }
+  updatePlayerHud();
+}
+
+function showDmg(txt, color){
+  const zone = $('.enemy-zone');
+  const el = document.createElement('div');
+  el.className='dmg'; el.textContent = txt;
+  el.style.color = color;
+  el.style.left = '50%'; el.style.top = '58%';
+  zone.appendChild(el);
+  setTimeout(()=>el.remove(), 950);
+}
+
+function killEnemy(){
+  const sp = $('#enemySprite');
+  sp.classList.add('dead');
+  sDie();
+  B.coin += B.isBoss ? 40 : 12;
+  B.exp += B.isBoss ? 60 : 18;
+  $('#battleCoin').textContent = B.coin;
+
+  setTimeout(()=>{
+    B.wave++;
+    if(B.wave > B.totalWave){ winBattle(); return; }
+    spawnEnemy();
+  }, 750);
+}
+
+/* ================== 技能 ================== */
+$('#skHeal').onclick = ()=>{
+  if(B.locked || B.cd.heal>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
+  B.mp--; B.hp = Math.min(B.maxHp, B.hp + 30); B.cd.heal = 3;
+  showDmg('+30', '#4DE38A'); updatePlayerHud(); sHit();
+};
+$('#skBomb').onclick = ()=>{
+  if(B.locked || B.cd.bomb>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
+  B.mp--; B.bombNext = true; B.cd.bomb = 3;
+  toast('💥 下一击伤害翻倍！'); updatePlayerHud();
+};
+$('#skHint').onclick = ()=>{
+  if(B.locked || B.cd.hint>0 || B.mp<1) { if(B.mp<1) toast('MP 不足'); return; }
+  if(B.q.t === 's'){ toast('💡 提示：' + B.q.ans[0].toUpperCase() + '...'); }
+  else{
+    // 排除两个错误选项
+    const wrongBtns = $$('#qCard .opt-b').filter(b=>b.dataset.v !== B.q.ans);
+    shuffle(wrongBtns).slice(0,2).forEach(b=>{ b.classList.add('dim'); b.style.pointerEvents='none'; });
+    toast('💡 排除了两个错误选项');
+  }
+  B.mp--; B.cd.hint = 3; updatePlayerHud();
+};
+
+/* ================== 结算 ================== */
+function winBattle(){
+  const total = B.right + B.wrong;
+  const rate = total? B.right/total : 0;
+  const stars = rate>=1 ? 3 : rate>=0.8 ? 2 : rate>=0.6 ? 1 : 0;
+  const h = heroObj();
+  let expGain = Math.round(B.exp * (1 + (h.expBonus||0)) * (save.items.includes('amulet')?1.2:1) * (save.items.includes('crown')?1.15:1));
+  let coinGain = Math.round(B.coin * (1 + (h.coinBonus||0)) * (save.items.includes('ring')?1.25:1) * (save.items.includes('crown')?1.15:1));
+
+  const key = B.mapId+'_'+save.stage;
+  if(stars > (save.stars[key]||0)) save.stars[key] = stars;
+
+  save.coin += coinGain;
+  save.totalRight += B.right;
+  save.totalWrong += B.wrong;
+  save.battles = (save.battles||0)+1;
+  const curWaveKey = 'w_'+key;
+  if((save[curWaveKey]||0) < B.totalWave) save[curWaveKey] = B.totalWave;
+
+  // 经验升级
+  save.exp += expGain;
+  let leveled = 0;
+  while(save.exp >= expNeed(save.lv)){ save.exp -= expNeed(save.lv); save.lv++; leveled++; }
+  persist();
+
+  showResult(true, stars, expGain, coinGain, rate);
+  if(leveled){
+    try{ sLevel(); }catch(e){}
+    setTimeout(()=>{
+      $('#luDetail').textContent = `你的等级提升到了 Lv.${save.lv}！继续加油，词汇量又增加了。`;
+      $('#ovLevelUp').classList.add('show');
+      // 2.6 秒后自动关闭，避免挡住后续操作
+      clearTimeout(window.__luT);
+      window.__luT = setTimeout(()=>$('#ovLevelUp').classList.remove('show'), 2600);
+    }, 900);
+  }
+}
+
+function gameOver(){
+  persist();
+  showResult(false, 0, 0, 0, 0);
+}
+
+function showResult(win, stars, expGain, coinGain, rate){
+  $('#resIco').textContent = win ? (stars===3?'🏆':stars===2?'🎖️':'🏅') : '💀';
+  $('#resTitle').textContent = win ? (stars===3?'完美通关！':stars===2?'胜利！':'险胜！') : '战斗失败';
+  $('#resTitle').style.color = win ? 'var(--gold)' : '#FF6B8A';
+  const done = B.right + B.wrong;
+  $('#resSub').textContent = win
+    ? `${B.map.nm} · 击败 ${B.totalWave} 波敌人 · 正确率 ${Math.round(rate*100)}%`
+    : `在第 ${B.wave} 波倒下了… 已答对 ${B.right} 题，再来一次吧！`;
+  $('#rwRight').textContent = B.right;
+  $('#rwExp').textContent = '+' + expGain;
+  $('#rwCoin').textContent = '+' + coinGain;
+
+  const starEls = $('#resStars').children;
+  for(let i=0;i<3;i++){
+    starEls[i].classList.remove('on');
+    if(i<stars) setTimeout(()=>{ starEls[i].classList.add('on'); tone([660,830,1040][i],null,.25,'triangle',.07); }, 250+i*220);
+  }
+
+  if(B.wrongList.length){
+    $('#wrongBox').style.display='block';
+    const uniq = [];
+    const seen = new Set();
+    B.wrongList.forEach(w=>{ if(!seen.has(w.q)){ seen.add(w.q); uniq.push(w); } });
+    $('#wrongList').innerHTML = uniq.slice(0,8).map(w=>
+      `<div class="wrong-item"><span class="w">${w.q}</span><span class="r">${w.ans}</span></div>`).join('');
+  }else{
+    $('#wrongBox').style.display='none';
+  }
+  showScreen('screen-result');
+  if(win && stars>=2) confettiRain();
+}
+
+/* ================== 页面切换 ================== */
+function showScreen(id){
+  window.scrollTo(0,0);
+  $$('.screen').forEach(s=>s.classList.remove('active'));
+  $('#'+id).classList.add('active');
+}
+let toastT=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1700);
+}
+function confettiRain(){
+  const box=$('#confetti');
+  const chars=['⭐','✨','🌟','💫','🎉','🪙','💎'];
+  for(let i=0;i<26;i++){
+    const d=document.createElement('div');
+    d.textContent=chars[rnd(chars.length)];
+    d.style.cssText=`position:absolute;top:-40px;left:${rnd(100)}%;font-size:${12+rnd(16)}px;animation:fall ${1.5+Math.random()*1.4}s linear ${Math.random()*.7}s forwards;`;
+    box.appendChild(d);
+    setTimeout(()=>d.remove(),3800);
+  }
+}
+
+/* ================== 角色页 ================== */
+function renderHeroPage(){
+  $('#heroCoin').textContent = save.coin;
+  $('#heroGrid').innerHTML = HEROES.map(h=>{
+    const on = save.hero===h.id;
+    return `<div class="hero-item ${on?'on':''}" data-id="${h.id}">
+      <div class="av">${h.av}</div>
+      <div class="nm">${h.nm}</div>
+      <div class="sk">${h.sk}</div>
+    </div>`;
+  }).join('');
+  $$('#heroGrid .hero-item').forEach(el=>{
+    el.onclick=()=>{ sClick(); save.hero=el.dataset.id; persist(); renderHeroPage(); toast('已选择 '+HEROES.find(h=>h.id===el.dataset.id).nm); };
+  });
+}
+
+/* ================== 商店 ================== */
+function renderShop(){
+  $('#shopCoin').textContent = save.coin;
+  $('#shopList').innerHTML = ITEMS.map(it=>{
+    const owned = save.items.includes(it.id);
+    return `<div class="equip-row ${owned?'owned':''}">
+      <div class="ei">${it.ico}</div>
+      <div class="einfo"><div class="en">${it.nm}</div><div class="ed">${it.desc}</div></div>
+      <button class="buy" data-id="${it.id}" ${owned?'disabled':''} ${(!owned && save.coin<it.price)?'disabled':''}>
+        ${owned?'已拥有':'🪙 '+it.price}
+      </button>
+    </div>`;
+  }).join('');
+  $$('#shopList .buy').forEach(b=>{
+    b.onclick=()=>{
+      const it = ITEMS.find(x=>x.id===b.dataset.id);
+      if(!it || save.items.includes(it.id)) return;
+      if(save.coin < it.price){ toast('金币不足'); sMiss(); return; }
+      save.coin -= it.price; save.items.push(it.id); persist();
+      sLevel(); toast('购买成功：'+it.nm); renderShop();
+    };
+  });
+}
+
+/* ================== 战绩 ================== */
+function renderStats(){
+  const total = save.totalRight + save.totalWrong;
+  const acc = total ? Math.round(save.totalRight/total*100) : 0;
+  const starCount = Object.values(save.stars).reduce((a,b)=>a+b,0);
+  $('#statsGrid').innerHTML = `
+    <div class="stat-c"><div class="v">Lv.${save.lv}</div><div class="k">当前等级</div></div>
+    <div class="stat-c"><div class="v">${acc}%</div><div class="k">总正确率</div></div>
+    <div class="stat-c"><div class="v">${save.totalRight}</div><div class="k">累计答对</div></div>
+    <div class="stat-c"><div class="v">${starCount}</div><div class="k">获得星星</div></div>
+    <div class="stat-c"><div class="v">${save.battles||0}</div><div class="k">战斗次数</div></div>
+    <div class="stat-c"><div class="v">${save.coin}</div><div class="k">金币余额</div></div>`;
+  const stageNm = {1:'小学',2:'初中',3:'高中',4:'成人'};
+  $('#mapProgress').innerHTML = Object.keys(stageNm).map(s=>{
+    const rows = MAPS.map(m=>{
+      const st = save.stars[m.id+'_'+s]||0;
+      return `<div style="display:flex;justify-content:space-between;padding:6px 10px;font-size:11px;background:rgba(255,255,255,.04);border-radius:8px;margin-bottom:4px;">
+        <span>${m.ico} ${m.nm}</span><span style="color:var(--gold)">${st?'⭐'.repeat(st):'—'}</span></div>`;
+    }).join('');
+    return `<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:800;color:var(--dim);margin:6px 0;">${stageNm[s]}阶段</div>${rows}</div>`;
+  }).join('');
+}
+
+/* ================== 事件绑定 ================== */
+$('#btnHero').onclick = ()=>{ sClick(); renderHeroPage(); showScreen('screen-hero'); };
+$('#btnHeroBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnBag').onclick = ()=>{ sClick(); renderShop(); showScreen('screen-shop'); };
+$('#btnShopBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnStats').onclick = ()=>{ sClick(); renderStats(); showScreen('screen-stats'); };
+$('#btnStatsBack').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnResetAll').onclick = ()=>{
+  if(confirm('确定重置全部进度吗？等级、金币、道具都会清空')){
+    save = defaultSave(); persist(); renderHome(); renderStats(); toast('已重置');
+  }
+};
+$('#btnFlee').onclick = ()=> $('#ovFlee').classList.add('show');
+$('#fleeNo').onclick = ()=> $('#ovFlee').classList.remove('show');
+$('#fleeYes').onclick = ()=>{ $('#ovFlee').classList.remove('show'); renderHome(); showScreen('screen-home'); };
+$('#luOk').onclick = ()=>{ $('#ovLevelUp').classList.remove('show'); };
+$('#btnResHome').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
+$('#btnResAgain').onclick = ()=>{ startBattle(B.mapId); };
+
+document.addEventListener('touchstart', function once(){ ac(); document.removeEventListener('touchstart', once); }, {passive:true});
+document.addEventListener('touchmove', function(e){
+  if(!e.target.closest('.scroll-area,.sheet')) e.preventDefault();
+}, {passive:false});
+
+renderHome();
+
+// 仅供自动化测试使用的钩子（正式访问不生效）
+if(DEBUG){
+  window.__t = {
+    get q(){ return B.q; },
+    get state(){ return {hp:B.hp, maxHp:B.maxHp, wave:B.wave, right:B.right, wrong:B.wrong,
+      combo:B.combo, coin:B.coin, enemyHp:B.enemyHp, isBoss:B.isBoss, bossLeft:B.bossLeft, locked:B.locked}; },
+    settle, B
+  };
+}
+})();
+</script>
+</body>
+</html>
