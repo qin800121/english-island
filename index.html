@@ -432,6 +432,25 @@ body{
   background:rgba(255,255,255,.07);color:#cfc9e8;font-size:13px;font-weight:800;cursor:pointer;transition:.15s;}
 .gift-chip.on{background:linear-gradient(160deg,rgba(255,205,60,.3),rgba(255,150,40,.16));
   border-color:var(--gold);color:var(--gold);}
+/* ===== v3：字号放大 ===== */
+.q-main-text{font-size:22px;}
+.q-main-text .en{font-size:31px;font-weight:800;}
+.q-main-text .cn{font-size:15px;}
+.opt-b{font-size:17px;padding:14px;}
+.opts-b.grid2 .opt-b{font-size:15.5px;padding:14px 8px;}
+.q-sent{font-size:22px;}
+.q-chain .cw{font-size:28px;}
+.q-chain .tail{font-size:31px;}
+.spell-in{font-size:24px;padding:15px;}
+
+/* ===== v3：麦克风按钮 ===== */
+.mic-btn{width:100%;margin-top:10px;padding:12px;border-radius:13px;
+  border:2px dashed rgba(255,255,255,.28);background:rgba(90,160,255,.1);
+  color:#cfe3ff;font-size:15px;font-weight:800;cursor:pointer;transition:.15s;}
+.mic-btn.listening{border-color:#4DE38A;background:rgba(77,227,138,.14);color:#b9f4d0;
+  animation:micPulse 1s infinite;}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(77,227,138,.4)}50%{box-shadow:0 0 0 8px rgba(77,227,138,0)}}
+
 @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
@@ -485,6 +504,7 @@ body{
 <!-- ============ 战斗页 ============ -->
 <section class="screen" id="screen-battle">
   <div class="battle-hud">
+    <button class="icon-btn" id="btnMusic">🎵</button>
     <button class="icon-btn" id="btnFlee">✕</button>
     <div class="hud-pill">🎯 <b id="waveNum">1</b>/<b id="waveTotal">6</b></div>
     <div class="hud-pill" id="diffHud" style="font-size:8px;letter-spacing:-1px;">⭐⭐</div>
@@ -939,11 +959,64 @@ function tone(f1,f2,dur,type,vol){
   g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
   o.start();o.stop(c.currentTime+dur+.02);
 }
-const sHit=()=>{tone(880,1400,.12,'square',.05);};
-const sMiss=()=>{tone(320,160,.22,'sawtooth',.06);};
-const sDie=()=>{tone(600,120,.4,'triangle',.07);};
+/* 噪声层：让打击更有"质感" */
+let noiseBuf=null;
+function noise(dur,vol,fLow){
+  const c=ac(); if(!c)return;
+  if(!noiseBuf){
+    noiseBuf=c.createBuffer(1,c.sampleRate,c.sampleRate);
+    const d=noiseBuf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  }
+  const src=c.createBufferSource(); src.buffer=noiseBuf;
+  const g=c.createGain(), f=c.createBiquadFilter();
+  f.type='lowpass'; f.frequency.value=fLow||900;
+  g.gain.setValueAtTime(vol,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
+  src.connect(f); f.connect(g); g.connect(c.destination);
+  src.start(); src.stop(c.currentTime+dur);
+}
+/* 战斗音效：响度提升约一倍，三层叠加（高频+噪声+低频重击） */
+const sHit=()=>{ tone(880,1500,.14,'square',.11); noise(.13,.10,1500); tone(170,55,.2,'sine',.15); };
+const sMiss=()=>{ tone(300,140,.26,'sawtooth',.11); tone(150,70,.3,'square',.08); };
+const sDie=()=>{ tone(700,90,.5,'sawtooth',.13); noise(.42,.15,750); tone(120,42,.55,'sine',.18); };
 const sClick=()=>tone(520,null,.05,'sine',.04);
-const sLevel=()=>{tone(660,1320,.35,'triangle',.09);};
+const sLevel=()=>{ [660,830,990,1320].forEach((f,i)=>setTimeout(()=>tone(f,f*1.02,.22,'triangle',.13), i*110)); };
+
+/* ============ 场景背景音乐（程序化芯片音乐） ============ */
+const BGM_THEMES = {
+  space  :{bpm:126, bass:[110,110,146.8,164.8], scale:[440,523,587,659,784,880],      wave:'square',   vol:.022},
+  playful:{bpm:138, bass:[130.8,130.8,174.6,196], scale:[523,587,659,784,880,1046],    wave:'triangle', vol:.028},
+  mystic :{bpm:96,  bass:[98,98,130.8,146.8],    scale:[392,440,523,587,698,784],     wave:'sine',     vol:.03},
+  dark   :{bpm:86,  bass:[73.4,73.4,87.3,98],    scale:[293.7,329.6,392,440,523],     wave:'sawtooth', vol:.02},
+  epic   :{bpm:112, bass:[98,98,123.5,130.8],   scale:[392,466,523,587,698,784],     wave:'square',   vol:.024},
+  water  :{bpm:100, bass:[87.3,87.3,116.5,130.8],scale:[349,440,523,587,699,880],    wave:'sine',     vol:.03}
+};
+const MAP_BGM = { space:'space', zoo:'playful', forest:'mystic', zombie:'dark',
+  snow:'water', hood:'playful', cinder:'mystic', mermaid:'water',
+  sleeping:'mystic', king:'epic', history:'dark' };
+let bgmTimer=null, bgmStep=0, bgmOn = save.bgm!==false;
+function startBGM(mapId){
+  stopBGM();
+  if(!bgmOn) return;
+  const th = BGM_THEMES[MAP_BGM[mapId]||'mystic'];
+  if(!th) return;
+  bgmStep = 0;
+  let mi = 2;
+  const iv = 30000/th.bpm/2; // 八分音符毫秒
+  bgmTimer = setInterval(()=>{
+    const c=ac(); if(!c) return;
+    if(bgmStep%4===0)
+      tone(th.bass[(bgmStep/4)%th.bass.length], null, iv*3.6, 'triangle', .05);
+    if(bgmStep%2===0 || Math.random()<.4){
+      const f = th.scale[Math.abs(mi)%th.scale.length];
+      mi += (Math.random()<.7?1:2) * (Math.random()<.12?-1:1);
+      tone(f, null, iv*1.7, th.wave, th.vol);
+    }
+    bgmStep++;
+  }, iv);
+}
+function stopBGM(){ if(bgmTimer){ clearInterval(bgmTimer); bgmTimer=null; } }
 
 /* ================== 首页 ================== */
 function renderHome(){
@@ -1061,6 +1134,8 @@ function startBattle(mapId){
   }
   updatePlayerHud();
   showScreen('screen-battle');
+  startBGM(B.mapId);
+  const bm = $('#btnMusic'); if(bm) bm.textContent = bgmOn?'🎵':'🔇';
   spawnEnemy();
 }
 
@@ -1290,6 +1365,13 @@ function renderQuestion(){
       <button class="btn wide" id="spellSubmit" style="font-size:15px;padding:12px;">确定</button>`;
   }
   card.innerHTML = html;
+
+  // 语音作答按钮
+  const mic = document.createElement('button');
+  mic.className='mic-btn'; mic.id='micBtn';
+  mic.textContent='🎤 语音作答';
+  mic.onclick=()=>startMic(q);
+  card.appendChild(mic);
 
   if(q.t==='s'){
     const inp = $('#spellInput');
@@ -1558,6 +1640,7 @@ function gameOver(){
 }
 
 function showResult(win, stars, expGain, coinGain, rate){
+  stopBGM();
   $('#resIco').textContent = win ? (stars===3?'🏆':stars===2?'🎖️':'🏅') : '💀';
   $('#resTitle').textContent = win ? (stars===3?'完美通关！':stars===2?'胜利！':'险胜！') : '战斗失败';
   $('#resTitle').style.color = win ? 'var(--gold)' : '#FF6B8A';
@@ -1812,6 +1895,54 @@ function renderStats(){
   }).join('');
 }
 
+$('#btnMusic').onclick = ()=>{
+  bgmOn = !bgmOn; save.bgm = bgmOn; persist();
+  const bm = $('#btnMusic'); if(bm) bm.textContent = bgmOn?'🎵':'🔇';
+  if(bgmOn){
+    if(B.map && $('#screen-battle').classList.contains('active')) startBGM(B.mapId);
+    toast('🎵 背景音乐：开');
+  }else{ stopBGM(); toast('🔇 背景音乐：关'); }
+};
+
+/* ================== 麦克风语音答题 ================== */
+function startMic(q){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ toast('当前浏览器不支持语音识别，请用 Chrome/Edge 或微信打开后点右上角…选择浏览器'); return; }
+  if(startMic.running) return;
+  startMic.running = true;
+  const rec = new SR();
+  rec.lang = q.t==='m' ? 'zh-CN' : 'en-US';
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+  const mb = $('#micBtn');
+  if(mb){ mb.classList.add('listening'); mb.textContent='🎙️ 正在聆听…'; }
+  toast('🎤 请对着手机说出答案');
+  const done = ()=>{
+    startMic.running = false;
+    if(mb){ mb.classList.remove('listening'); mb.textContent='🎤 语音作答'; }
+  };
+  rec.onresult = e=>{
+    done();
+    const said = Array.from(e.results[0]).map(r=>r.transcript);
+    const norm = t => (t||'').toLowerCase().replace(/[^a-z\u4e00-\u9fa5]/g,'');
+    const target = norm(q.ans);
+    let hit = said.some(t=>{
+      const n = norm(t);
+      if(q.t==='m') return n && n.indexOf(target)>=0;
+      return n===target || n.replace(/^(the|a|an) /,'')===target;
+    });
+    if(hit){
+      const btn = $$('#qCard .opt-b').find(b=>b.dataset.v===q.ans);
+      if(btn) btn.click(); else settle(true);
+    }else{
+      toast('❌ 听到的不是正确答案，再试一次');
+    }
+  };
+  rec.onerror = ()=>{ done(); toast('🎤 没听清，请靠近一点再试'); };
+  rec.onend = ()=>{ done(); };
+  try{ rec.start(); }catch(e){ done(); }
+}
+
 /* ================== 历史记录 ================== */
 function renderHistory(){
   const box = $('#histList');
@@ -1874,7 +2005,7 @@ $('#btnResetAll').onclick = ()=>{
 };
 $('#btnFlee').onclick = ()=> $('#ovFlee').classList.add('show');
 $('#fleeNo').onclick = ()=> $('#ovFlee').classList.remove('show');
-$('#fleeYes').onclick = ()=>{ $('#ovFlee').classList.remove('show'); renderHome(); showScreen('screen-home'); };
+$('#fleeYes').onclick = ()=>{ $('#ovFlee').classList.remove('show'); stopBGM(); renderHome(); showScreen('screen-home'); };
 $('#luOk').onclick = ()=>{ $('#ovLevelUp').classList.remove('show'); };
 $('#btnResHome').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
 $('#btnResAgain').onclick = ()=>{ startBattle(B.mapId); };
