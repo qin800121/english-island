@@ -533,7 +533,6 @@ body{
 <!-- ============ 战斗页 ============ -->
 <section class="screen" id="screen-battle">
   <div class="battle-hud">
-    <button class="icon-btn" id="btnMusic">🎵</button>
     <button class="icon-btn" id="btnFlee">✕</button>
     <div class="hud-pill">🎯 <b id="waveNum">1</b>/<b id="waveTotal">6</b></div>
     <div class="hud-pill" id="diffHud" style="font-size:8px;letter-spacing:-1px;">⭐⭐</div>
@@ -996,37 +995,6 @@ const sDie=()=>{ tone(660,110,.45,'triangle',.12); tone(150,55,.5,'sine',.14); }
 const sClick=()=>tone(520,null,.05,'sine',.04);
 const sLevel=()=>{tone(660,1320,.35,'triangle',.09);};
 
-/* ============ 场景背景音乐（轻松歌曲风格，程序化演奏） ============ */
-const BGM_THEMES = {
-  space  :{bpm:84, bass:[110,110,146.8,164.8], mel:[523,587,659,523,440,523,587,659],      wave:'sine',     vol:.035},
-  playful:{bpm:92, bass:[130.8,130.8,174.6,196],mel:[523,587,659,784,659,587,523,440],      wave:'triangle', vol:.038},
-  mystic :{bpm:72, bass:[98,98,130.8,146.8],    mel:[392,440,523,587,523,440,392,349],      wave:'sine',     vol:.04},
-  dark   :{bpm:68, bass:[73.4,73.4,87.3,98],    mel:[293.7,349,392,349,293.7,261.6,246.9,293.7], wave:'triangle', vol:.034},
-  epic   :{bpm:80, bass:[98,98,123.5,130.8],    mel:[392,523,587,523,466,392,349,392],      wave:'triangle', vol:.035},
-  water  :{bpm:76, bass:[87.3,87.3,116.5,130.8],mel:[349,440,523,587,699,587,523,440],      wave:'sine',     vol:.04}
-};
-const MAP_BGM = { space:'space', zoo:'playful', forest:'mystic', zombie:'dark',
-  snow:'water', hood:'playful', cinder:'mystic', mermaid:'water',
-  sleeping:'mystic', king:'epic', history:'dark' };
-let bgmTimer=null, bgmStep=0, bgmOn = save.bgm===true; // 默认关闭
-function startBGM(mapId){
-  stopBGM();
-  if(!bgmOn) return;
-  const th = BGM_THEMES[MAP_BGM[mapId]||'mystic'];
-  if(!th) return;
-  bgmStep = 0;
-  const iv = 30000/th.bpm/2; // 八分音符
-  bgmTimer = setInterval(()=>{
-    const c=ac(); if(!c) return;
-    if(bgmStep%4===0)
-      tone(th.bass[(bgmStep/4)%th.bass.length]*2, null, iv*3.6, 'sine', .018);
-    if(bgmStep%2===0)
-      tone(th.mel[(bgmStep/2)%th.mel.length], null, iv*1.8, th.wave, th.vol);
-    bgmStep++;
-  }, iv);
-}
-function stopBGM(){ if(bgmTimer){ clearInterval(bgmTimer); bgmTimer=null; } }
-
 /* ================== 首页 ================== */
 function renderHome(){
   const h = heroObj();
@@ -1159,7 +1127,6 @@ function startBattle(mapId){
   }
   updatePlayerHud();
   showScreen('screen-battle');
-  const bm = $('#btnMusic'); if(bm) bm.textContent = bgmOn?'🎵':'🔇';
   spawnEnemy();
 }
 
@@ -1657,7 +1624,6 @@ function gameOver(){
 }
 
 function showResult(win, stars, expGain, coinGain, rate){
-  stopBGM();
   $('#resIco').textContent = win ? (stars===3?'🏆':stars===2?'🎖️':'🏅') : '💀';
   $('#resTitle').textContent = win ? (stars===3?'完美通关！':stars===2?'胜利！':'险胜！') : '战斗失败';
   $('#resTitle').style.color = win ? 'var(--gold)' : '#FF6B8A';
@@ -1912,15 +1878,6 @@ function renderStats(){
   }).join('');
 }
 
-$('#btnMusic').onclick = ()=>{
-  bgmOn = !bgmOn; save.bgm = bgmOn; persist();
-  const bm = $('#btnMusic'); if(bm) bm.textContent = bgmOn?'🎵':'🔇';
-  if(bgmOn){
-    if(B.map && $('#screen-battle').classList.contains('active')){ startBGM(B.mapId); toast('🎵 轻音乐：开'); }
-    else toast('🎵 进入战斗后播放轻音乐');
-  }else{ stopBGM(); toast('🔇 背景音乐：关'); }
-};
-
 /* ================== 历史记录 ================== */
 function renderHistory(){
   const box = $('#histList');
@@ -1984,7 +1941,7 @@ $('#btnResetAll').onclick = ()=>{
 };
 $('#btnFlee').onclick = ()=> $('#ovFlee').classList.add('show');
 $('#fleeNo').onclick = ()=> $('#ovFlee').classList.remove('show');
-$('#fleeYes').onclick = ()=>{ $('#ovFlee').classList.remove('show'); stopBGM(); renderHome(); showScreen('screen-home'); };
+$('#fleeYes').onclick = ()=>{ $('#ovFlee').classList.remove('show'); renderHome(); showScreen('screen-home'); };
 $('#luOk').onclick = ()=>{ $('#ovLevelUp').classList.remove('show'); };
 $('#btnResHome').onclick = ()=>{ renderHome(); showScreen('screen-home'); };
 $('#btnResAgain').onclick = ()=>{ startBattle(B.mapId); };
